@@ -8,8 +8,8 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		screeps: {
 			options: {
-				email:    '*****************',
-				password: '*****************',
+				email:    'Antimarvin@gmail.com',
+				password: 'Amarvin2',
 				branch:   'default',
 				ptr:      false,
 			},
@@ -25,7 +25,7 @@ module.exports = function (grunt) {
 				filter:  'isFile',
 				cwd:     'dist/',
 				src:     '**',
-				dest:    'Update This Path'
+				dest:    'C:/Users/Rickys/AppData/Local/Screeps/scripts/127_0_0_1___21025/default'
 			},
 		},
 	});

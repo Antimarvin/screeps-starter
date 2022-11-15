@@ -1,4 +1,4 @@
-var roleUpgrader = {
+var roleBuilder = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
@@ -19,7 +19,7 @@ var roleUpgrader = {
     // checks if the room needs to spawn a creep
     spawn: function(room) {
         var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room.name == room.name);
-        console.log('Upgraders: ' + upgraders.length, room.name);
+        console.log('Builders: ' + upgraders.length, room.name);
 
         if (upgraders.length < 2) {
             return true;
@@ -27,12 +27,12 @@ var roleUpgrader = {
     },
     // returns an object with the data to spawn a new creep
     spawnData: function(room) {
-            let name = 'Upgrader' + Game.time;
+            let name = 'Builder' + Game.time;
             let body = [WORK, CARRY, MOVE];
-            let memory = {role: 'upgrader', status: false};
+            let memory = {role: 'builder', status: false};
         
             return {name, body, memory};
     }
 };
 
-module.exports = roleUpgrader;
+module.exports = roleBuilder;

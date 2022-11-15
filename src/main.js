@@ -7,7 +7,10 @@ module.exports.loop = function () {
     // make a list of all of our rooms
     Game.myRooms = _.filter(Game.rooms, r => r.controller && r.controller.level > 0 && r.controller.my);
 
-    // run spwan logic for each room in our empire
+    //Develop resourcing plan for rooms
+    _.forEach(Game.myRooms, r => roomLogic.resourcePlan(r));
+
+    // run spawn logic against each room in our empire
     _.forEach(Game.myRooms, r => roomLogic.spawning(r));
     
     // run each creep role see /creeps/index.js
