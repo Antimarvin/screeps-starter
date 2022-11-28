@@ -8,7 +8,7 @@ module.exports.loop = function () {
     let myRooms = _.filter(Game.rooms, r => r.controller && r.controller.level > 0 && r.controller.my);
 
     // Create Resourcing Plan for each room
-    _.forEach(myRooms, r => roomLogic.roomPlan(r));
+    _.forEach(myRooms, r => r.update);
 
     // run spawn logic against each room in our empire
     _.forEach(myRooms, r => roomLogic.spawning(r));
