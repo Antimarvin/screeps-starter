@@ -31,4 +31,4 @@ var harvester = {
     }
 };
 
-module.exports = harvester;
+module.exports = { harvester: harvester, HARVESTER_TYPES: HARVESTER_TYPES};
