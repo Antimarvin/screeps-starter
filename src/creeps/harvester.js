@@ -29,10 +29,10 @@ var harvester = {
     spawnData: function(type) {
             let body = HARVESTER_TYPES[type];
             let memory = {role: 'harvester', busy: false};
-            let name = type + " Harvester "
+            let name = type + " Harvester ";
 
             return {body: body, name: name, memory: memory};
     }
 };
 
-module.exports = { harvester: harvester, HARVESTER_TYPES: HARVESTER_TYPES};
+module.exports =  harvester;
