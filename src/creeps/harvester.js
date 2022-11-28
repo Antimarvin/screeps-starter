@@ -1,3 +1,9 @@
+const HARVESTER_TYPES = {
+    Speed: [WORK, CARRY, MOVE, MOVE],
+    Capacity: [WORK, CARRY, CARRY, MOVE],
+    Efficiency: [WORK, WORK, CARRY, MOVE]
+}
+
 var harvester = {
 
     /** @param {Creep} creep **/
@@ -17,8 +23,8 @@ var harvester = {
         }
     },
     // returns an object with the data to spawn a new creep
-    spawnData: function(room, instruction) {
-            let body = [WORK, CARRY, MOVE];
+    spawnData: function(room, type) {
+            let body = HARVESTER_TYPES[type];
             let memory = {role: 'harvester', busy: false};
         
             return {body, memory};
