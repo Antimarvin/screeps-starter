@@ -1,3 +1,4 @@
 let files = {
-    creep: require("./creep")
+    creep: require("./creep"),
+    room: require("./room")
 }
