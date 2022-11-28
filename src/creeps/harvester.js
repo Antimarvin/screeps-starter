@@ -23,11 +23,15 @@ var harvester = {
         }
     },
     // returns an object with the data to spawn a new creep
-    spawnData: function(room, type) {
+    /** *
+     * @param {string} type
+     */
+    spawnData: function(type) {
             let body = HARVESTER_TYPES[type];
             let memory = {role: 'harvester', busy: false};
-        
-            return {body, memory};
+            let name = type + " Harvester "
+
+            return {body: body, name: name, memory: memory};
     }
 };
 
