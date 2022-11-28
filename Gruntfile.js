@@ -2,16 +2,17 @@ let matchdep = require('matchdep');
 let mergeFiles = require('./grunt-scripts/mergeFiles');
 
 module.exports = function (grunt) {
+	var config = require('./.screeps.json')
 	matchdep.filterAll(['grunt-*', '!grunt-cli']).forEach(grunt.loadNpmTasks);
 	mergeFiles(grunt);
 
 	grunt.initConfig({
 		screeps: {
 			options: {
-				email:    '*************',
-				password: '*************',
-				branch:   'default',
-				ptr:      false,
+				email:    config.email,
+				password: config.password,
+				branch:   config.branch,
+				ptr:      config.ptr,
 			},
 			dist:    {
 				src: ['dist/*.js']
