@@ -1,7 +1,7 @@
 const HARVESTER_TYPES = {
-    Speed: [WORK, CARRY, MOVE, MOVE],
-    Capacity: [WORK, CARRY, CARRY, MOVE],
-    Efficiency: [WORK, WORK, CARRY, MOVE]
+    speed: [WORK, CARRY, MOVE, MOVE],
+    capacity: [WORK, CARRY, CARRY, MOVE],
+    efficiency: [WORK, WORK, CARRY, MOVE]
 }
 
 var harvester = {
