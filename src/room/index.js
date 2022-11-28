@@ -1,6 +1,6 @@
 let roomLogic = {
     spawning:     require('./spawning'),
-    resourcePlan: require('./resoucePlan')
+    roomPlan: require('./roomPlan')
 }
 
 module.exports = roomLogic;
