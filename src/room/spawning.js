@@ -2,7 +2,7 @@ let creepLogic = require("../creeps/index");
 let creepTypes = _.keys(creepLogic);
 
 function spawnCreeps(room) {
-    BQ = room.memory.buildQueue
+    let BQ = room.memory.buildQueue
     if (BQ) {
         // get the data for spawning a new creep of creepTypeNeeded
         let creepSpawnData = creepLogic[BQ[0].role] && creepLogic[BQ[0].role].spawnData(room, BQ[0].instruction);
