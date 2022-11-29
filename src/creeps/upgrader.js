@@ -18,7 +18,7 @@ var roleUpgrader = {
     },
     // returns an object with the data to spawn a new creep
     spawnData: function() {
-            let name = 'Upgrader C-';
+            let name = 'Upgrader C_';
             let body = [WORK, CARRY, MOVE, MOVE];
             let memory = {role: 'upgrader', busy: false};
         
