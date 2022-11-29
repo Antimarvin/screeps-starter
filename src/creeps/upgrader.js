@@ -4,7 +4,7 @@ var roleUpgrader = {
     run: function(creep) {
         if(creep.store[RESOURCE_ENERGY] === 0) {
             if(creep.room.energyAvailable > 0) {
-                var storage = creep.room.find(FIND_MY_STRUCTURES).find(structure => structure.store[RESOURCE_ENERGY] > 0);
+                var storage = creep.room.find(FIND_MY_SPAWNS)[0];
                 if (creep.withdraw(storage, RESOURCE_ENERGY)) {
                     creep.moveTo(storage);
                 }
@@ -28,7 +28,7 @@ var roleUpgrader = {
     // returns an object with the data to spawn a new creep
     spawnData: function() {
             let name = 'Upgrader C-';
-            let body = [WORK, CARRY, MOVE];
+            let body = [WORK, CARRY, MOVE, MOVE];
             let memory = {role: 'upgrader', busy: false};
         
             return {name, body, memory};
