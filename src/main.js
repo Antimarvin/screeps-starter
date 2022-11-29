@@ -1,7 +1,7 @@
+let prototypes = require('./prototypes'); //needs to be called to update prototypes. otherwise unused
 let creepLogic = require('./creeps');
 let roomLogic = require('./room');
-let prototypes = require('./prototypes'); //needs to be called to update prototypes. otherwise unused
-let config = require('../.screeps.json')
+let config = require('../.screeps.json');
 
 
 module.exports.loop = function () {

@@ -10,7 +10,7 @@ function findOptimumSourcePlan(storageLocation, source) {
 
     for(let i=0; i < sourcePlan.quantity; i++){
         let spawnData = creepLogic.harvester.spawnData(sourcePlan.bodyType);
-        spawnData.memory.target = s;
+        spawnData.memory.target = sourcePlan.target;
         spawnData.name = spawnData.name + "S" + source.id + "_" + i;
         creepList.push(spawnData)
     }
@@ -56,12 +56,11 @@ Room.prototype.resourcePlanning = function resourcePlanning(){
 //Initialize rooms with data
 Room.prototype.init = function init(){
     console.log("Running init.")
-    if(!this.memory.buildQueue){
+    if(!this.memory.buildQueue) {
         this.memory.buildQueue = [];
     }
-    if(!this.memory.resourcePlan){
-        this.resourcePlanning();
-    }
+    this.resourcePlanning();
+
 }
 
 /** @param {Boolean} debug_status **/
