@@ -10,8 +10,8 @@ var harvester = {
     run: function(creep) {
         if(creep.store.getFreeCapacity() > 0) {
             creep.say('Mining!')
-            if(creep.harvest(creep.memory.target) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.memory.target);
+            if(creep.harvest(Game.getObjectById(creep.memory.target)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.target));
             }
         }
         else {
@@ -29,7 +29,7 @@ var harvester = {
     spawnData: function(type) {
             let body = HARVESTER_TYPES[type];
             let memory = {role: 'harvester', busy: false};
-            let name = type + " Harvester ";
+            let name = type + " Harvester S-";
 
             return {body: body, name: name, memory: memory};
     }

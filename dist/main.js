@@ -146,7 +146,7 @@ function findOptimumSourcePlan(storageLocation, source) {
     for(let i=0; i < sourcePlan.quantity; i++){
         let spawnData = creepLogic.harvester.spawnData(sourcePlan.bodyType);
         spawnData.memory.target = sourcePlan.target;
-        spawnData.name = spawnData.name + "S" + source.id + "_" + i;
+        spawnData.name = spawnData.name + source.id + "_" + i;
         creepList.push(spawnData)
     }
     return creepList;
@@ -161,14 +161,14 @@ Room.prototype.creepNotInQueue = function creepNotInQueue(creep){
     return true
 }
 
-Room.prototype.creepNotExist = function creepNotExist(creep){
+Room.prototype.creepNotExist = function creepNotExist(test_creep){
     for(let c in Game.creeps){
-        if(c.name === creep.name){
+        let creep = Game.creeps[c];
+        if(creep.name === test_creep.name){
             return false
         }
     }
     return true
-
 }
 
 Room.prototype.resourcePlanning = function resourcePlanning(){
@@ -181,12 +181,30 @@ Room.prototype.resourcePlanning = function resourcePlanning(){
         this.memory.resourcePlan[source.id] = findOptimumSourcePlan(this.find(FIND_MY_SPAWNS)[0], source);
     }
 }
+
+
+Room.prototype.upgradePlanning = function upgradePlanning(){
+    console.log("Creating Upgrade Plan for " + this.name);
+
+    let controller = this.controller.id
+    let quantity = 2
+    let creepList = []
+
+    for (let i = 0; i < quantity; i++){
+        let spawnData = creepLogic.upgrader.spawnData();
+        spawnData.memory.target = controller;
+        spawnData.name = spawnData.name + controller + "_" + i;
+        creepList.push(spawnData)
+    }
+    this.memory.upgradePlan = creepList
+}
 Room.prototype.init = function init(){
     console.log("Running init.")
     if(!this.memory.buildQueue) {
         this.memory.buildQueue = [];
     }
     this.resourcePlanning();
+    this.upgradePlanning();
 
 }
 
@@ -197,6 +215,7 @@ Room.prototype.update = function update(debug_status) {
     }
     console.log("Updating " + this.name);
     let rp = this.memory.resourcePlan;
+    let up = this.memory.upgradePlan;
     if (!rp) {
         this.resourcePlanning();
     }
@@ -214,15 +233,22 @@ Room.prototype.update = function update(debug_status) {
             console.log(rp[source][0])
 
             for(let i in rp[source]) {
-                console.log("Checking" + i)
-                if (this.creepNotInQueue(rp[source][i]) && this.creepNotExist(rp[source][i])) {
+                if ((this.creepNotInQueue(rp[source][i]) && this.creepNotExist(rp[source][i]))) {
                     this.memory.buildQueue.push(rp[source][i])
 
                 }
             }
         }
     }
+
+    for(let i in up){
+        console.log("Upgrader Name: " + up[i].name)
+        if(this.creepNotInQueue(up[i]) && this.creepNotExist(up[i])){
+            this.memory.buildQueue.push(up[i]);
+        }
+    }
 }
+
 return module.exports;
 }
 /********** End of module 6: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\room.js **********/
@@ -240,8 +266,8 @@ var harvester = {
     run: function(creep) {
         if(creep.store.getFreeCapacity() > 0) {
             creep.say('Mining!')
-            if(creep.harvest(creep.memory.target) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.memory.target);
+            if(creep.harvest(Game.getObjectById(creep.memory.target)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(Game.getObjectById(creep.memory.target));
             }
         }
         else {
@@ -258,7 +284,7 @@ var harvester = {
     spawnData: function(type) {
             let body = HARVESTER_TYPES[type];
             let memory = {role: 'harvester', busy: false};
-            let name = type + " Harvester ";
+            let name = type + " Harvester S-";
 
             return {body: body, name: name, memory: memory};
     }
@@ -274,7 +300,7 @@ var roleUpgrader = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        if(creep.store[RESOURCE_ENERGY] == 0) {
+        if(creep.store[RESOURCE_ENERGY] === 0) {
             if(creep.room.energyAvailable > 0) {
                 var storage = creep.room.find(FIND_MY_STRUCTURES).find(structure => structure.store[RESOURCE_ENERGY] > 0);
                 if (creep.withdraw(storage, RESOURCE_ENERGY)) {
@@ -283,13 +309,13 @@ var roleUpgrader = {
             }
         }
         else {
-            if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+            if(creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
             }
         }
     },
     spawn: function(room) {
-        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader' && creep.room.name == room.name);
+        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role === 'upgrader' && creep.room.name === room.name);
         console.log('Upgraders: ' + upgraders.length, room.name);
 
         if (upgraders.length < 2) {
@@ -297,9 +323,9 @@ var roleUpgrader = {
         }
     },
     spawnData: function(room) {
-            let name = 'Upgrader' + Game.time;
+            let name = 'Upgrader C-';
             let body = [WORK, CARRY, MOVE];
-            let memory = {role: 'upgrader', status: false};
+            let memory = {role: 'upgrader', busy: false};
         
             return {name, body, memory};
     }
@@ -315,7 +341,6 @@ __modules[9] = function(module, exports) {
 
 function spawnCreeps(room) {
     let bq = room.memory.buildQueue
-    console.log("Trying to spawn from build queue: " + bq[0].name)
     if (bq.length > 0) {
         let creepSpawnData = room.memory.buildQueue[0]
 

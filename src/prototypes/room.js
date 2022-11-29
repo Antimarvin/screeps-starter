@@ -11,7 +11,7 @@ function findOptimumSourcePlan(storageLocation, source) {
     for(let i=0; i < sourcePlan.quantity; i++){
         let spawnData = creepLogic.harvester.spawnData(sourcePlan.bodyType);
         spawnData.memory.target = sourcePlan.target;
-        spawnData.name = spawnData.name + "S" + source.id + "_" + i;
+        spawnData.name = spawnData.name + source.id + "_" + i;
         creepList.push(spawnData)
     }
     return creepList;
@@ -27,15 +27,15 @@ Room.prototype.creepNotInQueue = function creepNotInQueue(creep){
     return true
 }
 
-Room.prototype.creepNotExist = function creepNotExist(creep){
+Room.prototype.creepNotExist = function creepNotExist(test_creep){
     for(let c in Game.creeps){
-        if(c.name === creep.name){
+        let creep = Game.creeps[c];
+        if(creep.name === test_creep.name){
             return false
         }
-        //console.log(c.name + "does not equal " + creep.name)
+        //console.log(creep.name + "does not equal " + test_creep.name)
     }
     return true
-
 }
 
 
@@ -53,6 +53,23 @@ Room.prototype.resourcePlanning = function resourcePlanning(){
     }
 }
 
+
+Room.prototype.upgradePlanning = function upgradePlanning(){
+    console.log("Creating Upgrade Plan for " + this.name);
+
+    let controller = this.controller.id
+    let quantity = 2
+    let creepList = []
+
+    for (let i = 0; i < quantity; i++){
+        let spawnData = creepLogic.upgrader.spawnData();
+        spawnData.memory.target = controller;
+        spawnData.name = spawnData.name + controller + "_" + i;
+        creepList.push(spawnData)
+    }
+    this.memory.upgradePlan = creepList
+}
+
 //Initialize rooms with data
 Room.prototype.init = function init(){
     console.log("Running init.")
@@ -60,6 +77,7 @@ Room.prototype.init = function init(){
         this.memory.buildQueue = [];
     }
     this.resourcePlanning();
+    this.upgradePlanning();
 
 }
 
@@ -74,6 +92,7 @@ Room.prototype.update = function update(debug_status) {
     // if you don't have a resource Plan, make one
     console.log("Updating " + this.name);
     let rp = this.memory.resourcePlan;
+    let up = this.memory.upgradePlan;
     if (!rp) {
         this.resourcePlanning();
     }
@@ -88,16 +107,18 @@ Room.prototype.update = function update(debug_status) {
             let creepNames = []
             _.forEach(creeps, c => creepNames.push(c.name))
 
-            console.log("The # of creeps that match the plan: " + creeps.length);
-            console.log(rp[source][0])
-
             for(let i in rp[source]) {
-                console.log("Checking" + i)
-                if (this.creepNotInQueue(rp[source][i]) && this.creepNotExist(rp[source][i])) {
+                if ((this.creepNotInQueue(rp[source][i]) && this.creepNotExist(rp[source][i]))) {
                     this.memory.buildQueue.push(rp[source][i])
 
                 }
             }
+        }
+    }
+
+    for(let i in up){
+        if(this.creepNotInQueue(up[i]) && this.creepNotExist(up[i])){
+            this.memory.buildQueue.push(up[i]);
         }
     }
 }

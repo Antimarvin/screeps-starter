@@ -3,7 +3,6 @@
 
 function spawnCreeps(room) {
     let bq = room.memory.buildQueue
-    console.log("Trying to spawn from build queue: " + bq[0].name)
     if (bq.length > 0) {
         // get the data for spawning a new creep of creepTypeNeeded
         let creepSpawnData = room.memory.buildQueue[0]
