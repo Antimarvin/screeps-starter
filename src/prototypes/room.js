@@ -58,7 +58,7 @@ Room.prototype.upgradePlanning = function upgradePlanning(){
     console.log("Creating Upgrade Plan for " + this.name);
 
     let controller = this.controller.id
-    let quantity = 2
+    let quantity = 4
     let creepList = []
 
     for (let i = 0; i < quantity; i++){
