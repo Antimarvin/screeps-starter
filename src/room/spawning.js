@@ -17,6 +17,10 @@ function spawnCreeps(room) {
                     //console.log ("Attempting Harvester spawn of " + hrPlan[r].role + " with " + s.room.energyCapacityAvailable)
                     s.createHarvester(hrPlan[r].role, s.room.energyCapacityAvailable)
                 }
+                else if(hrPlan[r].role === 'truck'){
+                    //console.log ("Attempting Harvester spawn of " + hrPlan[r].role + " with " + s.room.energyCapacityAvailable)
+                    s.createTruck(hrPlan[r].role, s.room.energyCapacityAvailable)
+                }
                 else {
                     //console.log ("Attempting Scaling spawn of " + hrPlan[r].role + " with " + s.room.energyCapacityAvailable)
                     s.createScalingWorker(hrPlan[r].role, s.room.energyCapacityAvailable)

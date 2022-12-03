@@ -6,6 +6,10 @@ Room.prototype.init = function init(){
             role: 'harvester',
             minQty: this.find(FIND_SOURCES).length
         },
+        truck: {
+            role: 'truck',
+            minQty: 2
+        },
         upgrader: {
             role: 'upgrader',
             minQty: 2

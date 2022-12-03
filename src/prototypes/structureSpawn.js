@@ -28,3 +28,18 @@ StructureSpawn.prototype.createHarvester = function (role, energy){
     let name = Game.time.toString();
     return this.spawnCreep(body, name, {memory: {role: role, working: false}});
 }
+
+StructureSpawn.prototype.createTruck = function (role, energy){
+    let baseBodyCost = (2 * (BODYPART_COST.move) + BODYPART_COST.carry);
+    let bodyStacks = Math.floor(energy/baseBodyCost);
+    let workerBaseBodyDefinition = [MOVE,MOVE,CARRY];
+    let body = [];
+
+    for(let part of workerBaseBodyDefinition){
+        for(let i = 0; i < bodyStacks; i ++ ){
+            body.push(part);
+        }
+    }
+    let name = Game.time.toString();
+    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
+}
