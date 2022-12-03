@@ -49,7 +49,7 @@ function __getDirname(path) {
 	return require("path").resolve(__dirname + "/" + path + "/../");
 }
 /********** End of header **********/
-/********** Start module 0: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\main.js **********/
+/********** Start module 0: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\main.js **********/
 __modules[0] = function(module, exports) {
 let prototypes = __require(1,0); //needs to be called to update prototypes. otherwise unused
 let creepLogic = __require(2,0);
@@ -80,8 +80,8 @@ module.exports.loop = function () {
 }
 return module.exports;
 }
-/********** End of module 0: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\main.js **********/
-/********** Start module 1: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\prototypes\index.js **********/
+/********** End of module 0: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\main.js **********/
+/********** Start module 1: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\index.js **********/
 __modules[1] = function(module, exports) {
 let files = {
     creep: __require(5,1),
@@ -89,8 +89,8 @@ let files = {
 }
 return module.exports;
 }
-/********** End of module 1: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\prototypes\index.js **********/
-/********** Start module 2: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\creeps\index.js **********/
+/********** End of module 1: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\index.js **********/
+/********** Start module 2: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\index.js **********/
 __modules[2] = function(module, exports) {
 let creepLogic = {
     harvester:     __require(7,2),
@@ -100,8 +100,8 @@ let creepLogic = {
 module.exports = creepLogic;
 return module.exports;
 }
-/********** End of module 2: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\creeps\index.js **********/
-/********** Start module 3: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\room\index.js **********/
+/********** End of module 2: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\index.js **********/
+/********** Start module 3: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\room\index.js **********/
 __modules[3] = function(module, exports) {
 let roomLogic = {
     spawning:     __require(9,3)
@@ -110,21 +110,21 @@ let roomLogic = {
 module.exports = roomLogic;
 return module.exports;
 }
-/********** End of module 3: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\room\index.js **********/
-/********** Start module 4: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\.screeps.json **********/
+/********** End of module 3: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\room\index.js **********/
+/********** Start module 4: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\.screeps.json **********/
 __modules[4] = function(module, exports) {
 module.exports = {
   "email": "Antimarvin@gmail.com",
-  "password": "",
+  "password": "Amarvin2",
   "branch": "default",
   "ptr": false,
-  "debug": true,
-  "local_test_address": "C:\\Users\\Rickys\\AppData\\Local\\Screeps\\scripts\\127_0_0_1___21025\\default"
+  "local_test_address": "C:\\Users\\Antimarvin\\AppData\\Local\\Screeps\\scripts\\127_0_0_1___21025\\default",
+  "debug": true
 }
 return module.exports;
 }
-/********** End of module 4: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\.screeps.json **********/
-/********** Start module 5: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\prototypes\creep.js **********/
+/********** End of module 4: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\.screeps.json **********/
+/********** Start module 5: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\creep.js **********/
 __modules[5] = function(module, exports) {
 Creep.prototype.sayHello = function sayHello() {
     this.say("Hello", true);
@@ -132,8 +132,8 @@ Creep.prototype.sayHello = function sayHello() {
 
 return module.exports;
 }
-/********** End of module 5: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\prototypes\creep.js **********/
-/********** Start module 6: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\prototypes\room.js **********/
+/********** End of module 5: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\creep.js **********/
+/********** Start module 6: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\room.js **********/
 __modules[6] = function(module, exports) {
 let creepLogic = __require(2,6);
 function findOptimumSourcePlan(storageLocation, source) {
@@ -187,7 +187,7 @@ Room.prototype.upgradePlanning = function upgradePlanning(){
     console.log("Creating Upgrade Plan for " + this.name);
 
     let controller = this.controller.id
-    let quantity = 4
+    let quantity = 2
     let creepList = []
 
     for (let i = 0; i < quantity; i++){
@@ -229,6 +229,9 @@ Room.prototype.update = function update(debug_status) {
             let creepNames = []
             _.forEach(creeps, c => creepNames.push(c.name))
 
+            console.log("The # of creeps that match the plan: " + creeps.length);
+            console.log(rp[source][0])
+
             for(let i in rp[source]) {
                 if ((this.creepNotInQueue(rp[source][i]) && this.creepNotExist(rp[source][i]))) {
                     this.memory.buildQueue.push(rp[source][i])
@@ -239,6 +242,7 @@ Room.prototype.update = function update(debug_status) {
     }
 
     for(let i in up){
+        console.log("Upgrader Name: " + up[i].name)
         if(this.creepNotInQueue(up[i]) && this.creepNotExist(up[i])){
             this.memory.buildQueue.push(up[i]);
         }
@@ -247,8 +251,8 @@ Room.prototype.update = function update(debug_status) {
 
 return module.exports;
 }
-/********** End of module 6: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\prototypes\room.js **********/
-/********** Start module 7: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\creeps\harvester.js **********/
+/********** End of module 6: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\room.js **********/
+/********** Start module 7: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\harvester.js **********/
 __modules[7] = function(module, exports) {
 const HARVESTER_TYPES = {
     speed: [WORK, CARRY, MOVE, MOVE],
@@ -280,7 +284,7 @@ var harvester = {
     spawnData: function(type) {
             let body = HARVESTER_TYPES[type];
             let memory = {role: 'harvester', busy: false};
-            let name = type + " Harvester S_";
+            let name = type + " Harvester S-";
 
             return {body: body, name: name, memory: memory};
     }
@@ -289,8 +293,8 @@ var harvester = {
 module.exports =  harvester;
 return module.exports;
 }
-/********** End of module 7: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\creeps\harvester.js **********/
-/********** Start module 8: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\creeps\upgrader.js **********/
+/********** End of module 7: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\harvester.js **********/
+/********** Start module 8: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\upgrader.js **********/
 __modules[8] = function(module, exports) {
 var roleUpgrader = {
 
@@ -298,7 +302,7 @@ var roleUpgrader = {
     run: function(creep) {
         if(creep.store[RESOURCE_ENERGY] === 0) {
             if(creep.room.energyAvailable > 0) {
-                var storage = creep.room.find(FIND_MY_SPAWNS)[0];
+                var storage = creep.room.find(FIND_MY_STRUCTURES).find(structure => structure.store[RESOURCE_ENERGY] > 0);
                 if (creep.withdraw(storage, RESOURCE_ENERGY)) {
                     creep.moveTo(storage);
                 }
@@ -310,9 +314,17 @@ var roleUpgrader = {
             }
         }
     },
-    spawnData: function() {
-            let name = 'Upgrader C_';
-            let body = [WORK, CARRY, MOVE, MOVE];
+    spawn: function(room) {
+        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role === 'upgrader' && creep.room.name === room.name);
+        console.log('Upgraders: ' + upgraders.length, room.name);
+
+        if (upgraders.length < 2) {
+            return true;
+        }
+    },
+    spawnData: function(room) {
+            let name = 'Upgrader C-';
+            let body = [WORK, CARRY, MOVE];
             let memory = {role: 'upgrader', busy: false};
         
             return {name, body, memory};
@@ -322,8 +334,8 @@ var roleUpgrader = {
 module.exports = roleUpgrader;
 return module.exports;
 }
-/********** End of module 8: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\creeps\upgrader.js **********/
-/********** Start module 9: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\room\spawning.js **********/
+/********** End of module 8: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\upgrader.js **********/
+/********** Start module 9: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\room\spawning.js **********/
 __modules[9] = function(module, exports) {
 //let creepLogic = __require(2,9);
 
@@ -348,7 +360,7 @@ function spawnCreeps(room) {
 module.exports = spawnCreeps;
 return module.exports;
 }
-/********** End of module 9: S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\room\spawning.js **********/
+/********** End of module 9: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\room\spawning.js **********/
 /********** Footer **********/
 if(typeof module === "object")
 	module.exports = __require(0);
