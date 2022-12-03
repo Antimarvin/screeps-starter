@@ -6,7 +6,7 @@ var roleTruck = {
             creep.say("Refuel")
             let availableContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_CONTAINER
-                    && s.store.energy >= creep.store.getFreeCapacity()
+                    && s.store.energy > 0
             })
             let droppedResources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,  {
                 filter: r => r.amount >= creep.store.getFreeCapacity()
