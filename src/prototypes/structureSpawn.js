@@ -14,3 +14,17 @@ StructureSpawn.prototype.createScalingWorker = function (role, energy){
     let name = Game.time.toString();
     return this.spawnCreep(body, name, {memory: {role: role, working: false}});
 }
+
+StructureSpawn.prototype.createHarvester = function (role, energy){
+    let bodyStacks = Math.min(Math.floor((energy-BODYPART_COST.move)/BODYPART_COST.work), 5);
+    let workerBaseBodyDefinition = [WORK];
+    let body = [MOVE];
+
+    for(let part of workerBaseBodyDefinition){
+        for(let i = 0; i < bodyStacks; i ++ ){
+            body.push(part);
+        }
+    }
+    let name = Game.time.toString();
+    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
+}

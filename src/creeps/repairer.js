@@ -1,5 +1,5 @@
-var roleUpgrader = {
-
+const builder = require("./builder");
+var roleRepairer = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
@@ -13,15 +13,23 @@ var roleUpgrader = {
             }
         }
         else if (creep.memory.working) {
-            creep.say('Upgrading');
-            if(creep.transfer(creep.room.controller, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller);
+            creep.say('Repairing');
+            if(creep.build(creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: (s) => s.hits < s.hitsMax
+                    && s.structureType !== STRUCTURE_WALL})) === ERR_NOT_IN_RANGE) {
+
+                creep.moveTo(creep.build(creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (s) => s.hits < s.hitsMax && s.structureType !== STRUCTURE_WALL
+                })));
+            }
+            else {
+                builder.run(creep)
             }
             if (creep.store.energy === 0) {
                 creep.memory.working = false
             }
         }
     }
-};
+}
 
-module.exports = roleUpgrader;
+module.exports = roleRepairer;

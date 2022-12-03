@@ -4,9 +4,9 @@ var roleBuilder = {
     run: function(creep) {
 
         if(!creep.memory.working) {
-            creep.say("Mining!")
-            if(creep.harvest(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE));
+            creep.say("Refuel")
+            if(creep.pickup(creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES));
             }
             if(creep.store.getFreeCapacity() === 0){
                 creep.memory.working = true
@@ -19,6 +19,9 @@ var roleBuilder = {
             }
             else {
                 upgrader.run(creep)
+            }
+            if (creep.store.energy === 0) {
+                creep.memory.working = false
             }
         }
     }

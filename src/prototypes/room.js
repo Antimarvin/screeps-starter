@@ -4,7 +4,7 @@ Room.prototype.init = function init(){
     this.memory.hrPlan = {
         harvester: {
             role: 'harvester',
-            minQty: 2
+            minQty: this.find(FIND_SOURCES).length
         },
         upgrader: {
             role: 'upgrader',
@@ -12,6 +12,10 @@ Room.prototype.init = function init(){
         },
         builder: {
             role: 'builder',
+            minQty: 5
+        },
+        repairer: {
+            role: 'repairer',
             minQty: 5
         }
     }
