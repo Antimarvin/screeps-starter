@@ -12,5 +12,5 @@ StructureSpawn.prototype.createScalingWorker = function (role, energy){
         }
     }
     let name = Game.time.toString();
-    return this.spawnCreep(body, name, {memory: {role: role}});
+    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
 }

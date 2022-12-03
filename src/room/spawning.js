@@ -7,7 +7,6 @@ function spawnCreeps(room) {
         let creepsInRoom = room.find(FIND_MY_CREEPS)
         let hrPlan = room.memory.hrPlan
         for(let r in hrPlan) {
-            console.log()
             let numInRole = _.sum(creepsInRoom, c => c.memory.role === hrPlan[r].role)
             console.log ("Found " + numInRole + " of " +hrPlan[r].minQty + " " + hrPlan[r].role )
             if(numInRole < hrPlan[r].minQty){
