@@ -2,21 +2,19 @@
 //let creepTypes = _.keys(creepLogic);
 
 function spawnCreeps(room) {
-    let bq = room.memory.buildQueue
-    if (bq.length > 0) {
-        // get the data for spawning a new creep of creepTypeNeeded
-        let creepSpawnData = room.memory.buildQueue[0]
-
-        if (creepSpawnData) {
-            // find the first or 0th spawn in the room
-            let spawn = room.find(FIND_MY_SPAWNS)[0];
-            let result = spawn.spawnCreep(creepSpawnData.body,
-                                          creepSpawnData.name,
-                {memory: creepSpawnData.memory})
-            if(result === 0) {
-                room.memory.buildQueue.shift()
+    let spawns = room.find(FIND_MY_SPAWNS)
+    for (let s of spawns){
+        let creepsInRoom = room.find(FIND_MY_CREEPS)
+        let hrPlan = room.memory.hrPlan
+        for(let r in hrPlan) {
+            console.log()
+            let numInRole = _.sum(creepsInRoom, c => c.memory.role === hrPlan[r].role)
+            console.log ("Found " + numInRole + " of " +hrPlan[r].minQty + " " + hrPlan[r].role )
+            if(numInRole < hrPlan[r].minQty){
+                console.log ("Attempting spawn of " + hrPlan[r].role + " with " + s.room.energyCapacityAvailable)
+                let result = s.createScalingWorker(hrPlan[r].role, s.room.energyCapacityAvailable)
+                console.log(result)
             }
-            console.log("Tried to Spawn:", creepSpawnData.name, result)
         }
     }
 }

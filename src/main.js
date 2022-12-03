@@ -20,6 +20,7 @@ module.exports.loop = function () {
     for(let n in Game.creeps) {
         let creep = Game.creeps[n];
 
+
         let role = creep.memory.role;
         if (creepLogic[role]) {
             creepLogic[role].run(creep);
