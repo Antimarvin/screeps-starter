@@ -14,11 +14,15 @@ var roleBuilder = {
         }
         else if (creep.memory.working) {
             creep.say('Building');
-            if(creep.build(creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES));
-            }
-            else if (creep.store.energy === 0) {
-                creep.memory.working = false
+            let structure = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
+
+            if(structure){
+                if(creep.build(structure) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(structure);
+                }
+                else if (creep.store.energy === 0) {
+                    creep.memory.working = false
+                }
             }
             else {
                 upgrader.run(creep)

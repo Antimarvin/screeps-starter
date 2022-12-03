@@ -14,13 +14,15 @@ var roleRepairer = {
         }
         else if (creep.memory.working) {
             creep.say('Repairing');
-            if(creep.build(creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            let structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (s) => s.hits < s.hitsMax
-                    && s.structureType !== STRUCTURE_WALL})) === ERR_NOT_IN_RANGE) {
+                                              && s.structureType !== STRUCTURE_WALL})
 
-                creep.moveTo(creep.build(creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                    filter: (s) => s.hits < s.hitsMax && s.structureType !== STRUCTURE_WALL
-                })));
+            if(structure) {
+                if (creep.build(structure) === ERR_NOT_IN_RANGE) {
+
+                    creep.moveTo(structure);
+                }
             }
             else if (creep.store.energy === 0) {
                 creep.memory.working = false
