@@ -9,6 +9,10 @@ Room.prototype.init = function init(){
         upgrader: {
             role: 'upgrader',
             minQty: 5
+        },
+        builder: {
+            role: 'builder',
+            minQty: 5
         }
     }
 
