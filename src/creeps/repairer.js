@@ -22,12 +22,13 @@ var roleRepairer = {
                     filter: (s) => s.hits < s.hitsMax && s.structureType !== STRUCTURE_WALL
                 })));
             }
+            else if (creep.store.energy === 0) {
+                creep.memory.working = false
+            }
             else {
                 builder.run(creep)
             }
-            if (creep.store.energy === 0) {
-                creep.memory.working = false
-            }
+
         }
     }
 }

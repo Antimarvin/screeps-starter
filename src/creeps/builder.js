@@ -17,11 +17,11 @@ var roleBuilder = {
             if(creep.build(creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES));
             }
+            else if (creep.store.energy === 0) {
+                creep.memory.working = false
+            }
             else {
                 upgrader.run(creep)
-            }
-            if (creep.store.energy === 0) {
-                creep.memory.working = false
             }
         }
     }
