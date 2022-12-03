@@ -34,11 +34,14 @@ var roleBuilder = {
                 if(creep.build(structure) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(structure);
                 }
-                else if (creep.store.energy === 0) {
+                if (creep.store.energy === 0) {
                     creep.memory.working = false
                 }
             }
             else {
+                if (creep.store.energy === 0) {
+                    creep.memory.working = false
+                }
                 upgrader.run(creep)
             }
         }

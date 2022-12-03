@@ -36,14 +36,16 @@ var roleRepairer = {
                 if (creep.repair(structure) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(structure);
                 }
-            }
-            else if (creep.store.energy === 0) {
-                creep.memory.working = false
+                if (creep.store.energy === 0) {
+                    creep.memory.working = false
+                }
             }
             else {
+                if (creep.store.energy === 0) {
+                    creep.memory.working = false
+                }
                 builder.run(creep)
             }
-
         }
     }
 }
