@@ -1,12 +1,10 @@
-let harvester = require('./harvester')
-
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
 
         if(!creep.memory.working) {
-
+            creep.say("Mining!")
             if(creep.harvest(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE));
             }

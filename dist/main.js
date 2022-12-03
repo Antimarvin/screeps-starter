@@ -66,6 +66,7 @@ module.exports.loop = function () {
     for(let n in Game.creeps) {
         let creep = Game.creeps[n];
 
+
         let role = creep.memory.role;
         if (creepLogic[role]) {
             creepLogic[role].run(creep);
@@ -85,7 +86,8 @@ return module.exports;
 __modules[1] = function(module, exports) {
 let files = {
     creep: __require(5,1),
-    room: __require(6,1)
+    room: __require(6,1),
+    structureSpawn: __require(7,1)
 }
 return module.exports;
 }
@@ -93,8 +95,9 @@ return module.exports;
 /********** Start module 2: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\index.js **********/
 __modules[2] = function(module, exports) {
 let creepLogic = {
-    harvester:     __require(7,2),
-    upgrader:      __require(8,2),
+    harvester:     __require(8,2),
+    upgrader:      __require(9,2),
+    builder:       __require(10,2)
 }
 
 module.exports = creepLogic;
@@ -104,7 +107,7 @@ return module.exports;
 /********** Start module 3: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\room\index.js **********/
 __modules[3] = function(module, exports) {
 let roomLogic = {
-    spawning:     __require(9,3)
+    spawning:     __require(11,3)
 }
 
 module.exports = roomLogic;
@@ -114,12 +117,12 @@ return module.exports;
 /********** Start module 4: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\.screeps.json **********/
 __modules[4] = function(module, exports) {
 module.exports = {
-  "email": "Antimarvin@gmail.com",
+  "email": "antimarvin@gmail.com",
   "password": "Amarvin2",
-  "branch": "default",
+  "branch": "main",
   "ptr": false,
-  "local_test_address": "C:\\Users\\Antimarvin\\AppData\\Local\\Screeps\\scripts\\127_0_0_1___21025\\default",
-  "debug": true
+  "local_test_address": "",
+  "debug": false
 }
 return module.exports;
 }
@@ -135,224 +138,175 @@ return module.exports;
 /********** End of module 5: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\creep.js **********/
 /********** Start module 6: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\room.js **********/
 __modules[6] = function(module, exports) {
-let creepLogic = __require(2,6);
-function findOptimumSourcePlan(storageLocation, source) {
-    let creepList = []
-    let sourcePlan = {};
-    sourcePlan.quantity = 2;
-    sourcePlan.bodyType = "speed";
-    sourcePlan.target = source.id;
-
-    for(let i=0; i < sourcePlan.quantity; i++){
-        let spawnData = creepLogic.harvester.spawnData(sourcePlan.bodyType);
-        spawnData.memory.target = sourcePlan.target;
-        spawnData.name = spawnData.name + source.id + "_" + i;
-        creepList.push(spawnData)
-    }
-    return creepList;
-}
-
-Room.prototype.creepNotInQueue = function creepNotInQueue(creep){
-    for(let c of this.memory.buildQueue){
-        if(c.name === creep.name){
-            return false
-        }
-    }
-    return true
-}
-
-Room.prototype.creepNotExist = function creepNotExist(test_creep){
-    for(let c in Game.creeps){
-        let creep = Game.creeps[c];
-        if(creep.name === test_creep.name){
-            return false
-        }
-    }
-    return true
-}
-
-Room.prototype.resourcePlanning = function resourcePlanning(){
-    console.log("Creating resource plan for  "+ this.name);
-    this.memory.resourcePlan = {};
-
-    let roomSources = this.find(FIND_SOURCES);
-
-    for(let source of roomSources){
-        this.memory.resourcePlan[source.id] = findOptimumSourcePlan(this.find(FIND_MY_SPAWNS)[0], source);
-    }
-}
-
-
-Room.prototype.upgradePlanning = function upgradePlanning(){
-    console.log("Creating Upgrade Plan for " + this.name);
-
-    let controller = this.controller.id
-    let quantity = 2
-    let creepList = []
-
-    for (let i = 0; i < quantity; i++){
-        let spawnData = creepLogic.upgrader.spawnData();
-        spawnData.memory.target = controller;
-        spawnData.name = spawnData.name + controller + "_" + i;
-        creepList.push(spawnData)
-    }
-    this.memory.upgradePlan = creepList
-}
+//Initialize rooms with data
 Room.prototype.init = function init(){
-    console.log("Running init.")
-    if(!this.memory.buildQueue) {
-        this.memory.buildQueue = [];
+    console.log("Running init for ." + this.name)
+    this.memory.hrPlan = {
+        harvester: {
+            role: 'harvester',
+            minQty: 2
+        },
+        upgrader: {
+            role: 'upgrader',
+            minQty: 2
+        },
+        builder: {
+            role: 'builder',
+            minQty: 5
+        }
     }
-    this.resourcePlanning();
-    this.upgradePlanning();
 
 }
 
 /** @param {Boolean} debug_status **/
 Room.prototype.update = function update(debug_status) {
-    if (!this.memory || debug_status) {
+    if (!this.memory.hrPlan || debug_status) {
         this.init();
-    }
-    console.log("Updating " + this.name);
-    let rp = this.memory.resourcePlan;
-    let up = this.memory.upgradePlan;
-    if (!rp) {
-        this.resourcePlanning();
-    }
-    if (rp) {
-        for (let source in rp) {
-
-            let creeps = _.filter(Game.creeps, c => c.room.name === this.name &&
-                c.memory.target === source &&
-                c.memory.bodyType === rp[source].bodyType);
-
-            let creepNames = []
-            _.forEach(creeps, c => creepNames.push(c.name))
-
-            console.log("The # of creeps that match the plan: " + creeps.length);
-            console.log(rp[source][0])
-
-            for(let i in rp[source]) {
-                if ((this.creepNotInQueue(rp[source][i]) && this.creepNotExist(rp[source][i]))) {
-                    this.memory.buildQueue.push(rp[source][i])
-
-                }
-            }
-        }
-    }
-
-    for(let i in up){
-        console.log("Upgrader Name: " + up[i].name)
-        if(this.creepNotInQueue(up[i]) && this.creepNotExist(up[i])){
-            this.memory.buildQueue.push(up[i]);
-        }
     }
 }
 
 return module.exports;
 }
 /********** End of module 6: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\room.js **********/
-/********** Start module 7: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\harvester.js **********/
+/********** Start module 7: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\structureSpawn.js **********/
 __modules[7] = function(module, exports) {
-const HARVESTER_TYPES = {
-    speed: [WORK, CARRY, MOVE, MOVE],
-    capacity: [WORK, CARRY, CARRY, MOVE],
-    efficiency: [WORK, WORK, CARRY, MOVE]
+
+
+StructureSpawn.prototype.createScalingWorker = function (role, energy){
+    let baseBodyCost = BODYPART_COST.work + 2 * ( BODYPART_COST.move) + BODYPART_COST.carry;
+    let bodyStacks = Math.floor(energy/baseBodyCost);
+    let workerBaseBodyDefinition = [WORK,MOVE,MOVE,CARRY];
+    let body = [];
+
+    for(let part of workerBaseBodyDefinition){
+        for(let i = 0; i < bodyStacks; i ++ ){
+            body.push(part);
+        }
+    }
+    let name = Game.time.toString();
+    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
 }
-
+return module.exports;
+}
+/********** End of module 7: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\prototypes\structureSpawn.js **********/
+/********** Start module 8: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\harvester.js **********/
+__modules[8] = function(module, exports) {
 var harvester = {
-
     /** @param {Creep} creep **/
     run: function(creep) {
-        if(creep.store.getFreeCapacity() > 0) {
-            creep.say('Mining!')
-            if(creep.harvest(Game.getObjectById(creep.memory.target)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.getObjectById(creep.memory.target));
-            }
-        }
-        else {
-            creep.say('Full');
-            
-            if(creep.transfer(Game.spawns['Spawn1'], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.spawns['Spawn1']);
-            }
-        }
-    },
-    /** *
-     * @param {string} type
-     */
-    spawnData: function(type) {
-            let body = HARVESTER_TYPES[type];
-            let memory = {role: 'harvester', busy: false};
-            let name = type + " Harvester S-";
 
-            return {body: body, name: name, memory: memory};
+        if(!creep.memory.working) {
+            creep.say('Mining!')
+
+            if(creep.harvest(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)) === ERR_NOT_IN_RANGE) {
+
+                creep.moveTo(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE));
+            }
+            if(creep.store.getFreeCapacity() === 0){
+                creep.memory.working = true
+            }
+        }
+        else if (creep.memory.working) {
+            creep.say('Upgrading');
+            let closestDest = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: s => s.energyCapacity && (s.energy < s.energyCapacity)
+            })
+            if(creep.transfer(closestDest, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+
+                creep.moveTo(closestDest);
+            }
+            if (creep.store.energy === 0) {
+                creep.memory.working = false
+            }
+        }
     }
-};
+}
 
 module.exports =  harvester;
 return module.exports;
 }
-/********** End of module 7: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\harvester.js **********/
-/********** Start module 8: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\upgrader.js **********/
-__modules[8] = function(module, exports) {
+/********** End of module 8: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\harvester.js **********/
+/********** Start module 9: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\upgrader.js **********/
+__modules[9] = function(module, exports) {
+let harvester = __require(8,9)
+
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-        if(creep.store[RESOURCE_ENERGY] === 0) {
-            if(creep.room.energyAvailable > 0) {
-                var storage = creep.room.find(FIND_MY_STRUCTURES).find(structure => structure.store[RESOURCE_ENERGY] > 0);
-                if (creep.withdraw(storage, RESOURCE_ENERGY)) {
-                    creep.moveTo(storage);
-                }
+
+        if(!creep.memory.working) {
+            creep.say("Mining!")
+            if(creep.harvest(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE));
+            }
+            if(creep.store.getFreeCapacity() === 0){
+                creep.memory.working = true
             }
         }
-        else {
-            if(creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) {
+        else if (creep.memory.working) {
+            creep.say('Upgrading');
+            if(creep.transfer(creep.room.controller, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);
             }
+            if (creep.store.energy === 0) {
+                creep.memory.working = false
+            }
         }
-    },
-    spawn: function(room) {
-        var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role === 'upgrader' && creep.room.name === room.name);
-        console.log('Upgraders: ' + upgraders.length, room.name);
-
-        if (upgraders.length < 2) {
-            return true;
-        }
-    },
-    spawnData: function(room) {
-            let name = 'Upgrader C-';
-            let body = [WORK, CARRY, MOVE];
-            let memory = {role: 'upgrader', busy: false};
-        
-            return {name, body, memory};
     }
 };
 
 module.exports = roleUpgrader;
 return module.exports;
 }
-/********** End of module 8: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\upgrader.js **********/
-/********** Start module 9: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\room\spawning.js **********/
-__modules[9] = function(module, exports) {
-//let creepLogic = __require(2,9);
+/********** End of module 9: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\upgrader.js **********/
+/********** Start module 10: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\builder.js **********/
+__modules[10] = function(module, exports) {
+const upgrader = __require(9,10);
+var roleBuilder = {
+    /** @param {Creep} creep **/
+    run: function(creep) {
+
+        if(!creep.memory.working) {
+            creep.say("Mining!")
+            if(creep.harvest(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE));
+            }
+            if(creep.store.getFreeCapacity() === 0){
+                creep.memory.working = true
+            }
+        }
+        else if (creep.memory.working) {
+            creep.say('Building');
+            if(creep.build(creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES));
+            }
+            else {
+                upgrader.run(creep)
+            }
+        }
+    }
+}
+
+module.exports = roleBuilder;
+return module.exports;
+}
+/********** End of module 10: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\creeps\builder.js **********/
+/********** Start module 11: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\room\spawning.js **********/
+__modules[11] = function(module, exports) {
+//let creepLogic = __require(2,11);
 
 function spawnCreeps(room) {
-    let bq = room.memory.buildQueue
-    if (bq.length > 0) {
-        let creepSpawnData = room.memory.buildQueue[0]
-
-        if (creepSpawnData) {
-            let spawn = room.find(FIND_MY_SPAWNS)[0];
-            let result = spawn.spawnCreep(creepSpawnData.body,
-                                          creepSpawnData.name,
-                {memory: creepSpawnData.memory})
-            if(result === 0) {
-                room.memory.buildQueue.shift()
+    let spawns = room.find(FIND_MY_SPAWNS)
+    for (let s of spawns){
+        let creepsInRoom = room.find(FIND_MY_CREEPS)
+        let hrPlan = room.memory.hrPlan
+        for(let r in hrPlan) {
+            let numInRole = _.sum(creepsInRoom, c => c.memory.role === hrPlan[r].role)
+            if(numInRole < hrPlan[r].minQty){
+                console.log ("Attempting spawn of " + hrPlan[r].role + " with " + s.room.energyCapacityAvailable)
+                let result = s.createScalingWorker(hrPlan[r].role, s.room.energyCapacityAvailable)
             }
-            console.log("Tried to Spawn:", creepSpawnData.name, result)
         }
     }
 }
@@ -360,7 +314,7 @@ function spawnCreeps(room) {
 module.exports = spawnCreeps;
 return module.exports;
 }
-/********** End of module 9: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\room\spawning.js **********/
+/********** End of module 11: C:\Users\Antimarvin\Documents\GitHub\screeps-starter\src\room\spawning.js **********/
 /********** Footer **********/
 if(typeof module === "object")
 	module.exports = __require(0);
