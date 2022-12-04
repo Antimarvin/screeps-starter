@@ -3,8 +3,16 @@ var roleBuilder = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
+        if (creep.store.energy === 0) {
+            creep.memory.working = false
+        }
+        if(creep.store.getFreeCapacity() === 0){
+            creep.memory.working = true
+        }
+
+
         if(!creep.memory.working) {
-            creep.say("Refuel")
+            //creep.say("Refuel")
             let availableContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_CONTAINER
                     && s.store.energy >= creep.store.getFreeCapacity()
@@ -22,26 +30,17 @@ var roleBuilder = {
                     creep.moveTo(availableContainer);
                 }
             }
-            if(creep.store.getFreeCapacity() === 0){
-                creep.memory.working = true
-            }
         }
         else if (creep.memory.working) {
-            creep.say('Building');
+            //creep.say('Building');
             let structure = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
 
             if(structure){
                 if(creep.build(structure) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(structure);
                 }
-                if (creep.store.energy === 0) {
-                    creep.memory.working = false
-                }
             }
             else {
-                if (creep.store.energy === 0) {
-                    creep.memory.working = false
-                }
                 upgrader.run(creep)
             }
         }
