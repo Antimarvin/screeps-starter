@@ -1,4 +1,4 @@
-const builder = require("./builder");
+const wallRepairer = require("./wallRepairer");
 var roleRepairer = {
     /** @param {Creep} creep **/
     run: function(creep) {
@@ -34,7 +34,8 @@ var roleRepairer = {
             //creep.say('Repairing');
             let structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (s) => s.hits < s.hitsMax
-                                              && s.structureType !== STRUCTURE_WALL})
+                                              && s.structureType !== STRUCTURE_WALL
+                                              && s.structureType !== STRUCTURE_RAMPART})
 
             if(structure) {
                 if (creep.repair(structure) === ERR_NOT_IN_RANGE) {
@@ -43,7 +44,7 @@ var roleRepairer = {
             }
             else {
 
-                builder.run(creep)
+                wallRepairer.run(creep)
             }
         }
     }
