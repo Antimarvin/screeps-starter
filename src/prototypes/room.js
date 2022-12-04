@@ -12,14 +12,18 @@ Room.prototype.init = function init(){
         },
         upgrader: {
             role: 'upgrader',
-            minQty: 1
+            minQty: 4
         },
         builder: {
             role: 'builder',
-            minQty: 1
+            minQty: 2
         },
         repairer: {
             role: 'repairer',
+            minQty: 4
+        },
+        wallRepairer: {
+            role: 'wallRepairer',
             minQty: 1
         }
     }
