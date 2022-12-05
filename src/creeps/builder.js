@@ -1,29 +1,51 @@
+const upgrader = require("./upgrader");
 var roleBuilder = {
-
     /** @param {Creep} creep **/
     run: function(creep) {
-        if(creep.store[RESOURCE_ENERGY] === 0) {
-            if(creep.room.energyAvailable > 0) {
-                var storage = creep.room.find(FIND_MY_STRUCTURES).find(structure => structure.store[RESOURCE_ENERGY] > 0);
-                if (creep.withdraw(storage, RESOURCE_ENERGY)) {
-                    creep.moveTo(storage);
+
+        if(!creep.memory.working) {
+            creep.say("Refuel")
+            let availableContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: s => s.structureType === STRUCTURE_CONTAINER
+                    && s.store.energy >= creep.store.getFreeCapacity()
+            })
+            let droppedResources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,  {
+                filter: r => r.amount >= creep.store.getFreeCapacity()
+            })
+            if(!availableContainer) {
+                if (creep.pickup(droppedResources) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(droppedResources);
                 }
             }
-        }
-        else {
-            if(creep.build(creep.room.find(FIND_CONSTRUCTION_SITES)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.room.controller);
+            else if (availableContainer) {
+                if (creep.withdraw(availableContainer, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(availableContainer);
+                }
+            }
+            if(creep.store.getFreeCapacity() === 0){
+                creep.memory.working = true
             }
         }
-    },
-    // returns an object with the data to spawn a new creep
-    spawnData: function() {
-            let name = 'Builder B_';
-            let body = [WORK, CARRY, MOVE];
-            let memory = {role: 'builder', status: false};
-        
-            return {name, body, memory};
+        else if (creep.memory.working) {
+            creep.say('Building');
+            let structure = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
+
+            if(structure){
+                if(creep.build(structure) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(structure);
+                }
+                if (creep.store.energy === 0) {
+                    creep.memory.working = false
+                }
+            }
+            else {
+                if (creep.store.energy === 0) {
+                    creep.memory.working = false
+                }
+                upgrader.run(creep)
+            }
+        }
     }
-};
+}
 
 module.exports = roleBuilder;

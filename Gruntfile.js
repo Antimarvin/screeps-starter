@@ -31,7 +31,7 @@ module.exports = function (grunt) {
 		},
 	});
 
-	grunt.registerTask('main', ['test', 'merge', 'write']);
+	grunt.registerTask('main', ['merge', 'write']);
 	grunt.registerTask('sandbox', ['merge', 'write-private']);
 	grunt.registerTask('merge', 'mergeFiles');
 	grunt.registerTask('write', 'screeps');
