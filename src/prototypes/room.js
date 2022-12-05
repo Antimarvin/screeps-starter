@@ -1,5 +1,7 @@
+let roomScout = require('./utils/roomScout');
+
 //Initialize rooms with data
-Room.prototype.init = function init(){
+Room.prototype.init = function (){
     console.log("Running init for ." + this.name)
     this.memory.hrPlan = {
         harvester: {
@@ -23,7 +25,6 @@ Room.prototype.init = function init(){
             minQty: 1
         }
     }
-
 }
 
 /** @param {Boolean} debug_status **/
@@ -32,4 +33,5 @@ Room.prototype.update = function update(debug_status) {
     if (!this.memory.hrPlan || debug_status) {
         this.init();
     }
+    roomScout(this)
 }
