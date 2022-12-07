@@ -1,45 +1,45 @@
 
 
 StructureSpawn.prototype.createScalingWorker = function (role, energy){
-    let baseBodyCost = BODYPART_COST.work + ( BODYPART_COST.move) + BODYPART_COST.carry;
-    let bodyStacks = Math.floor(energy/baseBodyCost);
+    let scaleableBodyCost = BODYPART_COST.work + ( BODYPART_COST.move) + BODYPART_COST.carry;
+    let bodyStacks = Math.floor(energy/scaleableBodyCost);
     let workerBaseBodyDefinition = [WORK,MOVE,CARRY];
-    let body = [];
+    let baseBody = [];
 
     for(let part of workerBaseBodyDefinition){
         for(let i = 0; i < bodyStacks; i ++ ){
-            body.push(part);
+            baseBody.push(part);
         }
     }
     let name = Game.time.toString();
-    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
+    return this.spawnCreep(baseBody, name, {memory: {role: role, working: false}});
 }
 
 StructureSpawn.prototype.createHarvester = function (role, energy){
-    let bodyStacks = Math.min(Math.floor((energy-BODYPART_COST.move)/BODYPART_COST.work), 5);
-    let workerBaseBodyDefinition = [WORK];
-    let body = [MOVE];
+    let bodyStacks = Math.min(Math.floor((energy) /(BODYPART_COST.move + (2 * BODYPART_COST.work))), 4);
+    let scaleableBody = [MOVE, WORK, WORK];
+    let baseBody = [];
 
-    for(let part of workerBaseBodyDefinition){
+    for(let part of scaleableBody){
         for(let i = 0; i < bodyStacks; i ++ ){
-            body.push(part);
+            baseBody.push(part);
         }
     }
     let name = Game.time.toString();
-    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
+    return this.spawnCreep(baseBody, name, {memory: {role: role, working: false}});
 }
 
 StructureSpawn.prototype.createTruck = function (role, energy){
-    let baseBodyCost = ((BODYPART_COST.move) + BODYPART_COST.carry);
-    let bodyStacks = Math.floor(energy/baseBodyCost);
-    let workerBaseBodyDefinition = [MOVE,CARRY];
-    let body = [];
+    let scaleableBodyCost = (BODYPART_COST.move + BODYPART_COST.carry);
+    let bodyStacks = Math.floor(energy/scaleableBodyCost);
+    let scaleableBody = [MOVE,CARRY];
+    let baseBody = [];
 
-    for(let part of workerBaseBodyDefinition){
+    for(let part of scaleableBody){
         for(let i = 0; i < bodyStacks; i ++ ){
-            body.push(part);
+            baseBody.push(part);
         }
     }
     let name = Game.time.toString();
-    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
+    return this.spawnCreep(baseBody, name, {memory: {role: role, working: false}});
 }
