@@ -75,9 +75,6 @@ Room.prototype.update = function update(debug_status) {
     if(!this.memory.containers || debug_status){
         this.updateContainerProps();
     }
-    if(!this.memory.containers || debug_status){
-        this.updateContainerProps(debug_status);
-    }
     roomScout(this)
     resourcingManager()
 }
