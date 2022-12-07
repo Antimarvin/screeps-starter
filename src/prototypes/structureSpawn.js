@@ -16,7 +16,7 @@ StructureSpawn.prototype.createScalingWorker = function (role, energy){
 }
 
 StructureSpawn.prototype.createHarvester = function (role, energy){
-    let bodyStacks = Math.min(Math.floor((energy) /(BODYPART_COST.move + (2 * BODYPART_COST.work))), 4);
+    let bodyStacks = Math.min(Math.floor((energy) /(BODYPART_COST.move + (2 * BODYPART_COST.work))), 3);
     let scaleableBody = [MOVE, WORK, WORK];
     let baseBody = [];
 
