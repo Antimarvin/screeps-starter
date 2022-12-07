@@ -9,7 +9,6 @@
       <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Managers/resourcingManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Managers/resourcingManager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prototypes/room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/prototypes/room.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prototypes/structureSpawn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/prototypes/structureSpawn.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prototypes/utils/roomScout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/prototypes/utils/roomScout.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,7 +73,7 @@
       <workItem from="1670245936278" duration="2782000" />
       <workItem from="1670250119588" duration="14077000" />
       <workItem from="1670420454487" duration="440000" />
-      <workItem from="1670420938247" duration="7797000" />
+      <workItem from="1670420938247" duration="8208000" />
     </task>
     <task id="LOCAL-00001" summary="Havent commited in a while and dont want to lose this at home.">
       <created>1668543062806</created>
