@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa294e7a-0b09-46d6-935b-29b13580ca8a" name="Changes" comment="added room scout subroutine">
+    <list default="true" id="fa294e7a-0b09-46d6-935b-29b13580ca8a" name="Changes" comment="??? IDE fail?">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Managers/resourcingManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Managers/resourcingManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prototypes/room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/prototypes/room.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prototypes/utils/roomScout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/prototypes/utils/roomScout.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +69,7 @@
       <workItem from="1670245936278" duration="2782000" />
       <workItem from="1670250119588" duration="14077000" />
       <workItem from="1670420454487" duration="440000" />
-      <workItem from="1670420938247" duration="8208000" />
+      <workItem from="1670420938247" duration="8970000" />
     </task>
     <task id="LOCAL-00001" summary="Havent commited in a while and dont want to lose this at home.">
       <created>1668543062806</created>
@@ -243,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670264113026</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="??? IDE fail?">
+      <created>1670441369761</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1670441369761</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,6 +287,7 @@
     <MESSAGE value="Final Daily Commit." />
     <MESSAGE value="Added New archetecture paradigm placeholders" />
     <MESSAGE value="added room scout subroutine" />
-    <option name="LAST_COMMIT_MESSAGE" value="added room scout subroutine" />
+    <MESSAGE value="??? IDE fail?" />
+    <option name="LAST_COMMIT_MESSAGE" value="??? IDE fail?" />
   </component>
 </project>
