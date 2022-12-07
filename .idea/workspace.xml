@@ -5,23 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa294e7a-0b09-46d6-935b-29b13580ca8a" name="Changes" comment="added room scout subroutine">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/creeps/wallRepairer.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/prototypes/tower.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/creeps/Truck.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/creeps/Truck.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/creeps/builder.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/creeps/builder.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/creeps/findResources.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/creeps/harvester.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/creeps/harvester.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/creeps/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/creeps/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/creeps/repairer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/creeps/repairer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/creeps/upgrader.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/creeps/upgrader.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/prototypes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/prototypes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Managers/resourcingManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Managers/resourcingManager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prototypes/room.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/prototypes/room.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/prototypes/structureSpawn.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/prototypes/structureSpawn.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/room/spawning.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/room/spawning.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/prototypes/utils/roomScout.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/prototypes/utils/roomScout.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,20 +39,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "S:/Employee Folders/Ricky Sweat/Projects/screeps-starter",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;S:/Employee Folders/Ricky Sweat/Projects/screeps-starter&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="S:\Employee Folders\Ricky Sweat\Projects\screeps-starter\src\creeps" />
@@ -84,7 +73,8 @@
       <workItem from="1669997975708" duration="2049000" />
       <workItem from="1670245936278" duration="2782000" />
       <workItem from="1670250119588" duration="14077000" />
-      <workItem from="1670420454487" duration="383000" />
+      <workItem from="1670420454487" duration="440000" />
+      <workItem from="1670420938247" duration="7797000" />
     </task>
     <task id="LOCAL-00001" summary="Havent commited in a while and dont want to lose this at home.">
       <created>1668543062806</created>

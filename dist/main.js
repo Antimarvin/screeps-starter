@@ -217,9 +217,6 @@ Room.prototype.update = function update(debug_status) {
     if(!this.memory.containers || debug_status){
         this.updateContainerProps();
     }
-    if(!this.memory.containers || debug_status){
-        this.updateContainerProps(debug_status);
-    }
     roomScout(this)
     resourcingManager()
 }
@@ -232,47 +229,47 @@ __modules[7] = function(module, exports) {
 
 
 StructureSpawn.prototype.createScalingWorker = function (role, energy){
-    let baseBodyCost = BODYPART_COST.work + ( BODYPART_COST.move) + BODYPART_COST.carry;
-    let bodyStacks = Math.floor(energy/baseBodyCost);
+    let scaleableBodyCost = BODYPART_COST.work + ( BODYPART_COST.move) + BODYPART_COST.carry;
+    let bodyStacks = Math.floor(energy/scaleableBodyCost);
     let workerBaseBodyDefinition = [WORK,MOVE,CARRY];
-    let body = [];
+    let baseBody = [];
 
     for(let part of workerBaseBodyDefinition){
         for(let i = 0; i < bodyStacks; i ++ ){
-            body.push(part);
+            baseBody.push(part);
         }
     }
     let name = Game.time.toString();
-    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
+    return this.spawnCreep(baseBody, name, {memory: {role: role, working: false}});
 }
 
 StructureSpawn.prototype.createHarvester = function (role, energy){
-    let bodyStacks = Math.min(Math.floor((energy-BODYPART_COST.move)/BODYPART_COST.work), 5);
-    let workerBaseBodyDefinition = [WORK];
-    let body = [MOVE];
+    let bodyStacks = Math.min(Math.floor((energy) /(BODYPART_COST.move + (2 * BODYPART_COST.work))), 4);
+    let scaleableBody = [MOVE, WORK, WORK];
+    let baseBody = [];
 
-    for(let part of workerBaseBodyDefinition){
+    for(let part of scaleableBody){
         for(let i = 0; i < bodyStacks; i ++ ){
-            body.push(part);
+            baseBody.push(part);
         }
     }
     let name = Game.time.toString();
-    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
+    return this.spawnCreep(baseBody, name, {memory: {role: role, working: false}});
 }
 
 StructureSpawn.prototype.createTruck = function (role, energy){
-    let baseBodyCost = ((BODYPART_COST.move) + BODYPART_COST.carry);
-    let bodyStacks = Math.floor(energy/baseBodyCost);
-    let workerBaseBodyDefinition = [MOVE,CARRY];
-    let body = [];
+    let scaleableBodyCost = (BODYPART_COST.move + BODYPART_COST.carry);
+    let bodyStacks = Math.floor(energy/scaleableBodyCost);
+    let scaleableBody = [MOVE,CARRY];
+    let baseBody = [];
 
-    for(let part of workerBaseBodyDefinition){
+    for(let part of scaleableBody){
         for(let i = 0; i < bodyStacks; i ++ ){
-            body.push(part);
+            baseBody.push(part);
         }
     }
     let name = Game.time.toString();
-    return this.spawnCreep(body, name, {memory: {role: role, working: false}});
+    return this.spawnCreep(baseBody, name, {memory: {role: role, working: false}});
 }
 return module.exports;
 }
@@ -669,7 +666,8 @@ function roomScout(room) {
     if(!room.memory.adjacentRooms){
         room.memory.adjacentRooms = Game.map.describeExits(room.name)
     }
-    if(true){
+
+    if(!room.memory.sources) {
         room.memory.sources = {}
         for(let s of room.find(FIND_SOURCES)){
             if(!room.memory.sources[s.id]) {
@@ -698,16 +696,16 @@ __modules[17] = function(module, exports) {
 
 function getEmpireSources() {
 
-    let sources = []
+    let empireSources = []
 
     for(let r in Memory.rooms) {
         if(Memory.rooms[r].sources){
             for(let s in Memory.rooms[r].sources) {
-                sources.push(s)
+                empireSources.push(s)
             }
         }
     }
-    return sources
+    return empireSources
 }
 
 
@@ -716,14 +714,16 @@ function getEmpireSources() {
         Memory.resourcingManager = {}
     }
     for(let s of getEmpireSources()){
-        Memory.resourcingManager[s] = {
-            source: Game.getObjectById(s),
-            miningLocations: Memory.rooms[Game.getObjectById(s).roomName].sources[s].miningLocations,
+        if(s !== undefined){
+            let sourceObject = Game.getObjectById(s)
 
+            Memory.resourcingManager[s] = {
+                source: Game.getObjectById(s),
+                miningLocations: Memory.rooms[sourceObject.room.name].sources[s].miningLocations,
+            }
         }
     }
  }
-
  module.exports = resourcingManager
 return module.exports;
 }
