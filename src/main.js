@@ -25,6 +25,12 @@ module.exports.loop = function () {
             creepLogic[role].run(creep);
         }
     }
+    let towers = _.filter(Game.structures, s => s.structureType === STRUCTURE_TOWER);
+    // for each tower
+    for (let tower of towers) {
+        // run tower logic
+        tower.defend();
+    }
 
     // free up memory if creep no longer exists
     for(let name in Memory.creeps) {

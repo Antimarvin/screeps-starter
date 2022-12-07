@@ -1,10 +1,12 @@
-var roleTruck = {
+const repairer = require("./repairer");
+
+var roleWallRepairer = {
     /** @param {Creep} creep **/
     run: function(creep) {
+
         if(creep.store.getFreeCapacity() === 0){
             creep.memory.working = true
         }
-
         if (creep.store.energy === 0) {
             creep.memory.working = false
         }
@@ -13,8 +15,7 @@ var roleTruck = {
             //creep.say("Refuel")
             let availableContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_CONTAINER
-                    && s.store.energy > 0
-                    && s.room.memory.containers[s.id].mine === true
+                    && s.store.energy >= creep.store.getFreeCapacity()
             })
             let droppedResources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,  {
                 filter: r => r.amount >= creep.store.getFreeCapacity()
@@ -31,34 +32,38 @@ var roleTruck = {
             }
         }
         else if (creep.memory.working) {
-            //creep.say('Vroom');
-            let primaryStructure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: s => (s.structureType === STRUCTURE_SPAWN
-                           || s.structureType === STRUCTURE_EXTENSION
-                           || s.structureType === STRUCTURE_TOWER)
-                           && s.energy < s.energyCapacity
-            });
-            let secondaryStructure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: s => (s.structureType === STRUCTURE_CONTAINER)
-                          && s.store.energy < s.store.getCapacity()
-                          && s.room.memory.containers[s.id].mine === false
+            //creep.say('Repairing');
+
+            let walls = creep.room.find(FIND_STRUCTURES, {
+                filter: s => s.structureType === STRUCTURE_WALL
+                          || s.structureType === STRUCTURE_RAMPART
             });
 
-            if(primaryStructure) {
-                if (creep.transfer(primaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(primaryStructure)
+            let target = undefined
+
+            for(let percentage = 0.0001; percentage <= 1; percentage = percentage + 0.0001){
+                for (let wall of walls) {
+                    if (wall.hits / wall.hitsMax < percentage) {
+                        target = wall;
+                        break
+                    }
+                }
+                if(target !== undefined){
+                    break
                 }
             }
-            else if (secondaryStructure) {
-                if (creep.transfer(secondaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(secondaryStructure);
+
+            if(target !== undefined) {
+                if (creep.repair(target) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
                 }
             }
             else {
-                creep.say("Stalled")
+
+                repairer.run(creep)
             }
         }
     }
 }
 
-module.exports = roleTruck;
+module.exports = roleWallRepairer;

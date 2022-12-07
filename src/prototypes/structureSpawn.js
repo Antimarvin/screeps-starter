@@ -1,9 +1,9 @@
 
 
 StructureSpawn.prototype.createScalingWorker = function (role, energy){
-    let baseBodyCost = BODYPART_COST.work + 2 * ( BODYPART_COST.move) + BODYPART_COST.carry;
+    let baseBodyCost = BODYPART_COST.work + ( BODYPART_COST.move) + BODYPART_COST.carry;
     let bodyStacks = Math.floor(energy/baseBodyCost);
-    let workerBaseBodyDefinition = [WORK,MOVE,MOVE,CARRY];
+    let workerBaseBodyDefinition = [WORK,MOVE,CARRY];
     let body = [];
 
     for(let part of workerBaseBodyDefinition){
@@ -30,9 +30,9 @@ StructureSpawn.prototype.createHarvester = function (role, energy){
 }
 
 StructureSpawn.prototype.createTruck = function (role, energy){
-    let baseBodyCost = (2 * (BODYPART_COST.move) + BODYPART_COST.carry);
+    let baseBodyCost = ((BODYPART_COST.move) + BODYPART_COST.carry);
     let bodyStacks = Math.floor(energy/baseBodyCost);
-    let workerBaseBodyDefinition = [MOVE,MOVE,CARRY];
+    let workerBaseBodyDefinition = [MOVE,CARRY];
     let body = [];
 
     for(let part of workerBaseBodyDefinition){

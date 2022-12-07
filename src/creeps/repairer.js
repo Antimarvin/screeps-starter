@@ -1,10 +1,17 @@
-const builder = require("./builder");
+const wallRepairer = require("./wallRepairer");
 var roleRepairer = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
+        if(creep.store.getFreeCapacity() === 0){
+            creep.memory.working = true
+        }
+        if (creep.store.energy === 0) {
+            creep.memory.working = false
+        }
+
         if(!creep.memory.working) {
-            creep.say("Refuel")
+            //creep.say("Refuel")
             let availableContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_CONTAINER
                     && s.store.energy >= creep.store.getFreeCapacity()
@@ -22,29 +29,22 @@ var roleRepairer = {
                     creep.moveTo(availableContainer);
                 }
             }
-            if(creep.store.getFreeCapacity() === 0){
-                creep.memory.working = true
-            }
         }
         else if (creep.memory.working) {
-            creep.say('Repairing');
+            //creep.say('Repairing');
             let structure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (s) => s.hits < s.hitsMax
-                                              && s.structureType !== STRUCTURE_WALL})
+                                              && s.structureType !== STRUCTURE_WALL
+                                              && s.structureType !== STRUCTURE_RAMPART})
 
             if(structure) {
                 if (creep.repair(structure) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(structure);
                 }
-                if (creep.store.energy === 0) {
-                    creep.memory.working = false
-                }
             }
             else {
-                if (creep.store.energy === 0) {
-                    creep.memory.working = false
-                }
-                builder.run(creep)
+
+                wallRepairer.run(creep)
             }
         }
     }
