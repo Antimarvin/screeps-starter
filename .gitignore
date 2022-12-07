@@ -2,3 +2,5 @@
 node_modules 
 dist/main.js
 .screeps.json
+dist/main.js
+.idea/workspace.xml
