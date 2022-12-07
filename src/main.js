@@ -25,6 +25,8 @@ module.exports.loop = function () {
             creepLogic[role].run(creep);
         }
     }
+
+    //tower logic. Find each tower. Call defend to shoot stuff
     let towers = _.filter(Game.structures, s => s.structureType === STRUCTURE_TOWER);
     // for each tower
     for (let tower of towers) {

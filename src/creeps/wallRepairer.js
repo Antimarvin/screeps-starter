@@ -42,7 +42,6 @@ var roleWallRepairer = {
             // grab all the walls and ramparts
             let walls = creep.room.find(FIND_STRUCTURES, {
                 filter: s => s.structureType === STRUCTURE_WALL
-                          || s.structureType === STRUCTURE_RAMPART
             });
 
             let target = undefined
