@@ -1,4 +1,5 @@
 let roomScout = require('./utils/roomScout');
+let resourcingManager = require('../Managers/resourcingManager')
 
 //Initialize rooms with data
 Room.prototype.init = function (){
@@ -34,4 +35,5 @@ Room.prototype.update = function update(debug_status) {
         this.init();
     }
     roomScout(this)
+    resourcingManager()
 }

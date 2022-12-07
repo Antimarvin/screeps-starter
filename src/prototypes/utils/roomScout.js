@@ -6,14 +6,13 @@ function getMiningLocations (source) {
     let horizontalRange = 3
 
     let terrain = Game.map.getRoomTerrain(source.room.name)
-    console.log(JSON.stringify(terrain))
 
     let yIndex = source.pos.y - (Math.floor(verticalRange / 2))
     let xIndex = source.pos.x - (Math.floor(horizontalRange / 2))
+
     //Loop through terrain map in square vert range x horizontal range centered on source, count non walls
     for(let i = yIndex ; i < (yIndex + verticalRange); i++){
         for(let j = xIndex; j < (xIndex + horizontalRange); j++){
-            console.log(terrain.get(j,i))
             if(terrain.get(j, i) !== TERRAIN_MASK_WALL){
                 console.log("Identified new mining spot at " + j + "," + i )
                 miningLocations.push(source.room.getPositionAt(j, i))
