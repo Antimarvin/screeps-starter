@@ -2,16 +2,16 @@
 
 function getEmpireSources() {
 
-    let sources = []
+    let empireSources = []
 
     for(let r in Memory.rooms) {
         if(Memory.rooms[r].sources){
             for(let s in Memory.rooms[r].sources) {
-                sources.push(s)
+                empireSources.push(s)
             }
         }
     }
-    return sources
+    return empireSources
 }
 
 
@@ -24,12 +24,14 @@ function getEmpireSources() {
 
     //create list of all sources
     for(let s of getEmpireSources()){
-        Memory.resourcingManager[s] = {
-            source: Game.getObjectById(s),
-            miningLocations: Memory.rooms[Game.getObjectById(s).roomName].sources[s].miningLocations,
+        if(s !== undefined){
+            let sourceObject = Game.getObjectById(s)
 
+            Memory.resourcingManager[s] = {
+                source: Game.getObjectById(s),
+                miningLocations: Memory.rooms[sourceObject.room.name].sources[s].miningLocations,
+            }
         }
     }
  }
-
  module.exports = resourcingManager
