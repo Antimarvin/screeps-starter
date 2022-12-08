@@ -69,6 +69,7 @@ var roleMiningTruck = {
             scalingBody: [CARRY, CARRY, MOVE],
             memory: {
                 role: 'miningTruck',
+                working: false,
                 targetMiningPosition: targetMiningPosition,
                 depositRoom: depositRoom
             }
