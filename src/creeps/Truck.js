@@ -38,25 +38,38 @@ var roleTruck = {
                            || s.structureType === STRUCTURE_TOWER)
                            && s.energy < s.energyCapacity
             });
-            let secondaryStructure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: s => (s.structureType === STRUCTURE_CONTAINER)
-                          && s.store.energy < s.store.getCapacity()
-                          && s.room.memory.containers[s.id].mine === false
-            });
+            // let secondaryStructure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            //     filter: s => (s.structureType === STRUCTURE_CONTAINER)
+            //               && s.store.energy < s.store.getCapacity()
+            //               && s.room.memory.containers[s.id].mine === false
+            // });
 
             if(primaryStructure) {
                 if (creep.transfer(primaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(primaryStructure)
                 }
             }
-            else if (secondaryStructure) {
-                if (creep.transfer(secondaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(secondaryStructure);
-                }
-            }
+            // else if (secondaryStructure) {
+            //     if (creep.transfer(secondaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+            //         creep.moveTo(secondaryStructure);
+            //     }
+            // }
             else {
                 creep.say("Stalled")
             }
+        }
+    },
+    defaultSettings: function (targetSource, depositTarget, serialNumber){
+        return {
+            name: `Truck_${targetSource.id}_${serialNumber}`,
+            baseBody: [],
+            scalingBody: [CARRY, CARRY, MOVE],
+            memory: {
+                role: 'truck',
+                targetSource: targetSource,
+                targetDeposit: depositTarget
+            },
+            energyLimit: 750
         }
     }
 }

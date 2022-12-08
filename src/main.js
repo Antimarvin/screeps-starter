@@ -1,20 +1,25 @@
 let prototypes = require('./prototypes'); //needs to be called to update prototypes. otherwise unused
 let creepLogic = require('./creeps');
 let roomLogic = require('./room');
+let resourcingManager = require('./Managers/resourcingManager')
 let config = require('../.screeps.json');
 
 
 module.exports.loop = function () {
     let debug_status = config.debug
     // make a list of all of our rooms;
-    let myRooms = _.filter(Game.rooms, r => r.controller && r.controller.level > 0 && r.controller.my);
+    let myCastles = _.filter(Game.rooms, r => r.controller && r.controller.level > 0 && r.controller.my);
 
     // Run room update to update room plans for all rooms
-    _.forEach(myRooms, r => r.update(debug_status));
+    _.forEach(Game.rooms, r => r.update(debug_status));
+    _.forEach(myCastles, r => resourcingManager(r));
+
+    //run resourcing manager to update resourcing creep commands and develop needed creeps
+
 
     // run spawn logic against each room in our empire
 
-    _.forEach(myRooms, r => roomLogic.spawning(r));
+    _.forEach(myCastles, r => roomLogic.spawning(r));
     
     // run each creep role see /creeps/index.js
     for(let n in Game.creeps) {

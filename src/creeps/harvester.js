@@ -2,13 +2,22 @@ var harvester = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
-        if(!creep.memory.working) {
-            if (creep.harvest(creep.pos.findClosestByPath(FIND_SOURCES)) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.pos.findClosestByPath(FIND_SOURCES));
-            }
+        let target = Game.getObjectById(creep.memory.targetSourceID)
+
+        if (creep.harvest(target) === ERR_NOT_IN_RANGE) {
+            creep.moveTo(target);
         }
-        else if (creep.memory.working) {
-            creep.memory.working = false
+    },
+    defaultSettings: function (targetSourceID, serialNumber){
+        return {
+            name: `Harvester_${targetSourceID}_${serialNumber}`,
+            baseBody: [],
+            scalingBody: [WORK,WORK,MOVE],
+            memory: {
+                role: 'harvester',
+                targetSourceID: targetSourceID
+            },
+            energyLimit: 750
         }
     }
 }
