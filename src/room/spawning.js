@@ -9,31 +9,35 @@ function spawnCreeps(room) {
         let creepsInRoom = room.find(FIND_MY_CREEPS)
         let hrPlan = room.memory.hrPlan
 
-        for(let r in hrPlan) {
-            let numInRole = _.sum(creepsInRoom, c => c.memory.role === hrPlan[r].role)
 
-            //if harvesters are 0 spawn one with available energy rather than max
-            if(_.sum(creepsInRoom, c => c.memory.role === 'harvester') === 0 ){
-                let creepMemory = {role: hrPlan[r].role, working: false}
-                s.createScalingCreep([],[MOVE, WORK, WORK], creepMemory, s.room.energyAvailable)
-            }
+        //if harvesters are 0 spawn one with available energy rather than max
+        if(_.sum(creepsInRoom, c => c.memory.role === 'harvester') === 0 ){
+            let creepMemory = {role: 'harvester', working: false}
+            s.createScalingCreep([],[MOVE, WORK, WORK], creepMemory, s.room.energyAvailable)
+        }
+        else {
+            for (let r in hrPlan) {
+                let numInRole = _.sum(creepsInRoom, c => c.memory.role === hrPlan[r].role)
 
-            //loop through roles checking current quantity against max qty and spawn if needed.
-            if(numInRole < hrPlan[r].minQty){
-                if(hrPlan[r].role === 'harvester'){
-                    //console.log ("Attempting Harvester spawn of " + hrPlan[r].role + " with " + s.room.energyCapacityAvailable)
-                    let creepMemory = {role: hrPlan[r].role, working: false}
-                    s.createScalingCreep([],[MOVE, WORK, WORK], creepMemory, s.room.energyCapacityAvailable)
-                }
-                else if(hrPlan[r].role === 'truck'){
-                    //console.log ("Attempting Harvester spawn of " + hrPlan[r].role + " with " + s.room.energyCapacityAvailable)
-                    let creepMemory = {role: hrPlan[r].role, working: false}
-                    s.createScalingCreep([],[MOVE, CARRY], creepMemory, s.room.energyCapacityAvailable)
-                }
-                else {
-                    //console.log ("Attempting Scaling spawn of " + hrPlan[r].role + " with " + s.room.energyCapacityAvailable)
-                    let creepMemory = {role: hrPlan[r].role, working: false}
-                    s.createScalingCreep([],[WORK,MOVE,CARRY], creepMemory, s.room.energyCapacityAvailable)
+                //loop through roles checking current quantity against max qty and spawn if needed.
+                if (numInRole < hrPlan[r].minQty) {
+                    if (hrPlan[r].role === 'harvester') {
+
+                        let creepMemory = {role: hrPlan[r].role, working: false}
+                        // this limits the stack to 3 which is 750
+                        let harvesterEnergyLimit = Math.min(s.room.energyCapacityAvailable, 750)
+                        s.createScalingCreep([], [MOVE, WORK, WORK], creepMemory, harvesterEnergyLimit)
+
+                    } else if (hrPlan[r].role === 'truck') {
+
+                        let creepMemory = {role: hrPlan[r].role, working: false}
+                        s.createScalingCreep([], [MOVE, CARRY], creepMemory, s.room.energyCapacityAvailable)
+
+                    } else {
+
+                        let creepMemory = {role: hrPlan[r].role, working: false}
+                        s.createScalingCreep([], [WORK, MOVE, CARRY], creepMemory, s.room.energyCapacityAvailable)
+                    }
                 }
             }
         }
