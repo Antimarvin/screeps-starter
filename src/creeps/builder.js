@@ -12,27 +12,20 @@ var roleBuilder = {
 
 
         if(!creep.memory.working) {
-            //creep.say("Refuel")
+
             let availableContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: s => s.structureType === STRUCTURE_CONTAINER
+                filter: s => (s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE)
                     && s.store.energy >= creep.store.getFreeCapacity()
             })
-            let droppedResources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,  {
-                filter: r => r.amount >= creep.store.getFreeCapacity()
-            })
-            if(!availableContainer) {
-                if (creep.pickup(droppedResources) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(droppedResources);
-                }
-            }
-            else if (availableContainer) {
+
+            if (availableContainer) {
                 if (creep.withdraw(availableContainer, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(availableContainer);
                 }
             }
         }
         else if (creep.memory.working) {
-            //creep.say('Building');
+
             let structure = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES)
 
             if(structure){
@@ -43,6 +36,19 @@ var roleBuilder = {
             else {
                 upgrader.run(creep)
             }
+        }
+    },
+    defaultSettings: function (serialNumber){
+        return {
+            name: `Truck_${serialNumber}`,
+            baseBody: [],
+            scalingBody: [CARRY, CARRY, MOVE],
+            memory: {
+                role: 'truck',
+                job : undefined,
+                jobTarget: undefined,
+                working: false
+            },
         }
     }
 }

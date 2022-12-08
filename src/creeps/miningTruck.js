@@ -22,7 +22,7 @@ var roleMiningTruck = {
                 if(creep.room.lookForAt(LOOK_RESOURCES,mine)){
                     creep.pickup(creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES))
                 }
-                else if(creep.room.lookForAt(LOOK_STRUCTURES,mine)) {
+                else {
                     creep.withdraw(creep.pos.findClosestByRange(STRUCTURE_CONTAINER), RESOURCE_ENERGY)
                 }
             }
@@ -37,25 +37,27 @@ var roleMiningTruck = {
             } else {
                 //creep.say('Vroom');
                 let primaryStructure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: s => (s.structureType === STRUCTURE_STORAGE)
+                        && s.store.energy < s.store.getCapacity()
+                });
+
+                let secondaryStructure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: s => (s.structureType === STRUCTURE_SPAWN
                             || s.structureType === STRUCTURE_EXTENSION
                             || s.structureType === STRUCTURE_TOWER)
                         && s.energy < s.energyCapacity
                 });
-                // let secondaryStructure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                //     filter: s => (s.structureType === STRUCTURE_CONTAINER)
-                //         && s.store.energy < s.store.getCapacity()
-                // });
 
                 if (primaryStructure) {
                     if (creep.transfer(primaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(primaryStructure)
                     }
                 }
-                // else if (secondaryStructure) {
-                //     if (creep.transfer(secondaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                //         creep.moveTo(secondaryStructure);
-                //     }
+                else if (secondaryStructure) {
+                    if (creep.transfer(secondaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    }
+                        creep.moveTo(secondaryStructure);
+                }
                 else {
                     creep.say("Stalled")
                 }

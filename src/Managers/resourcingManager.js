@@ -42,8 +42,6 @@ function getEmpireSources() {
             }
         }
     }
-
-    console.log(JSON.stringify(castleRoom.memory.buildQueue.high))
     for(let source in Memory.resourcingManager){
         for(let i = 0; i < Memory.resourcingManager[source].creeps.length; i++) {
             if(!(Memory.resourcingManager[source].creeps[i].name in Game.creeps)){
@@ -52,6 +50,5 @@ function getEmpireSources() {
             }
         }
     }
-     console.log(JSON.stringify(castleRoom.memory.buildQueue.high))
  }
  module.exports = resourcingManager

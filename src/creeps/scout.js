@@ -2,18 +2,25 @@ var roleScout = {
     /** @param {Creep} creep **/
     run: function(creep) {
 
-
+        if(creep.memory.working){
+            if(creep.room.name !== creep.memory.targetRoom){
+                creep.moveTo(creep.memory.targetRoom)
+            }
+            else {
+                creep.memory.working = false
+                creep.memory.targetRoom = undefined
+            }
+        }
     },
     defaultSettings: function (serialNumber) {
         return {
             name: `Scout_${serialNumber}`,
-            baseBody: [],
-            scalingBody: [CARRY, CARRY, MOVE],
+            baseBody: [TOUGH,TOUGH,MOVE],
+            scalingBody: [],
             memory: {
-                role: 'miningTruck',
+                role: 'scout',
                 working: false,
-                targetMiningPosition: targetMiningPosition,
-                depositRoom: depositRoom
+                targetRoom: undefined,
             }
         }
     }

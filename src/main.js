@@ -1,7 +1,7 @@
 let prototypes = require('./prototypes'); //needs to be called to update prototypes. otherwise unused
 let creepLogic = require('./creeps');
 let roomLogic = require('./room');
-let resourcingManager = require('./Managers/resourcingManager')
+let managersLogic = require('./Managers')
 let config = require('../.screeps.json');
 
 
@@ -12,7 +12,9 @@ module.exports.loop = function () {
 
     // Run room update to update room plans for all rooms
     _.forEach(Game.rooms, r => r.update(debug_status));
-    _.forEach(myCastles, r => resourcingManager(r));
+    _.forEach(myCastles, r => managersLogic.resourcingManager(r));
+    _.forEach(myCastles, r => managersLogic.fillingManager(r));
+    _.forEach(myCastles, r => managersLogic.scoutingManager(r));
 
     //run resourcing manager to update resourcing creep commands and develop needed creeps
 

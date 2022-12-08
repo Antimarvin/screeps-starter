@@ -11,22 +11,15 @@ var roleTruck = {
 
         if(!creep.memory.working) {
             //creep.say("Refuel")
-            let availableContainer = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: s => s.structureType === STRUCTURE_CONTAINER
+            let structureWithEnergy = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: s => (s.structureType === STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE)
                     && s.store.energy > 0
                     && s.room.memory.containers[s.id].mine === true
             })
-            let droppedResources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,  {
-                filter: r => r.amount >= creep.store.getFreeCapacity()
-            })
-            if(!availableContainer) {
-                if (creep.pickup(droppedResources) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(droppedResources);
-                }
-            }
-            else if (availableContainer) {
-                if (creep.withdraw(availableContainer, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(availableContainer);
+
+            if (structureWithEnergy) {
+                if (creep.withdraw(structureWithEnergy, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(structureWithEnergy);
                 }
             }
         }
@@ -38,38 +31,26 @@ var roleTruck = {
                            || s.structureType === STRUCTURE_TOWER)
                            && s.energy < s.energyCapacity
             });
-            // let secondaryStructure = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-            //     filter: s => (s.structureType === STRUCTURE_CONTAINER)
-            //               && s.store.energy < s.store.getCapacity()
-            //               && s.room.memory.containers[s.id].mine === false
-            // });
-
             if(primaryStructure) {
                 if (creep.transfer(primaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(primaryStructure)
                 }
             }
-            // else if (secondaryStructure) {
-            //     if (creep.transfer(secondaryStructure, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-            //         creep.moveTo(secondaryStructure);
-            //     }
-            // }
             else {
                 creep.say("Stalled")
             }
         }
     },
-    defaultSettings: function (targetSource, depositTarget, serialNumber){
+    defaultSettings: function (serialNumber){
         return {
-            name: `Truck_${targetSource.id}_${serialNumber}`,
+            name: `Truck_${serialNumber}`,
             baseBody: [],
             scalingBody: [CARRY, CARRY, MOVE],
             memory: {
                 role: 'truck',
-                targetSource: targetSource,
-                targetDeposit: depositTarget
+                working: false
             },
-            energyLimit: 750
+
         }
     }
 }
