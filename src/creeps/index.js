@@ -5,7 +5,8 @@ let creepLogic = {
     repairer:      require('./repairer'),
     truck:         require('./Truck'),
     wallRepairer:  require('./wallRepairer'),
-    miningTruck:   require('./miningTruck')
+    miningTruck:   require('./miningTruck'),
+    scout:         require('./scout')
 }
 
 module.exports = creepLogic;
