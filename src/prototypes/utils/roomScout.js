@@ -42,7 +42,7 @@ function roomScout(room) {
         }
     }
 
-    if(!room.memory.controller){
+    if(!room.memory.controller && room.controller){
         room.memory.controller = room.controller.id
     }
 
