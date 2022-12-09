@@ -1,4 +1,9 @@
 StructureSpawn.prototype.createScalingCreep = function (name, baseBody, scalableBody, memory, maxEnergy = this.room.energyCapacityAvailable) {
+    if(Memory.creeps[name]){
+        delete Memory.creeps[name];
+    }
+
+
     let baseBodyCost = getBodyCost(baseBody)
     let scaleableBodyCost = getBodyCost(scalableBody)
     let bodyStacks = Math.floor((maxEnergy - baseBodyCost) / scaleableBodyCost);

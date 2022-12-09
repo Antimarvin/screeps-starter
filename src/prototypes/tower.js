@@ -2,7 +2,17 @@
 StructureTower.prototype.defend =
     function () {
         // find closes hostile creep
-        let target = this.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        let hostileCreepWithHeal = this.pos.findClosestByRange(FIND_HOSTILE_CREEPS,{
+            filter: c => c.getActiveBodyparts(HEAL)> 0
+        });
+        var target
+
+        if (!hostileCreepWithHeal) {
+              target = this.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        }
+        else {
+              target = hostileCreepWithHeal
+        }
         // if one is found...
         if (target !== undefined) {
             // ...FIRE!

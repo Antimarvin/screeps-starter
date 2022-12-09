@@ -1,3 +1,5 @@
+// noinspection JSUnusedLocalSymbols
+
 let prototypes = require('./prototypes'); //needs to be called to update prototypes. otherwise unused
 let creepLogic = require('./creeps');
 let roomLogic = require('./room');
@@ -15,6 +17,7 @@ module.exports.loop = function () {
     _.forEach(myCastles, r => managersLogic.resourcingManager(r));
     _.forEach(myCastles, r => managersLogic.fillingManager(r));
     _.forEach(myCastles, r => managersLogic.scoutingManager(r));
+    _.forEach(myCastles, r => managersLogic.buildingManager(r));
 
     //run resourcing manager to update resourcing creep commands and develop needed creeps
 
