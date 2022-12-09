@@ -6,7 +6,10 @@ function getEmpireSources() {
     for(let r in Memory.rooms) {
         if(Memory.rooms[r].sources){
             for(let s in Memory.rooms[r].sources) {
-                empireSources.push(Memory.rooms[r].sources[s])
+                if(Object.keys(Memory.rooms[r].sources[s]).length !== 0){
+                    //console.log(`Pushing ${Memory.rooms[r].sources[s].id} onto the stack`)
+                    empireSources.push(Memory.rooms[r].sources[s])
+                }
             }
         }
     }
@@ -24,15 +27,15 @@ function getEmpireSources() {
 
     //create list of all sources
     for(let s of allSources){
+        //console.log(JSON.stringify(s))
         if(s !== undefined){
-            let sourceObject = Game.getObjectById(s.id)
             let creeps = []
 
             //add harvesters
-            creeps.push(creepLogic.harvester.defaultSettings(sourceObject.id,1))
+            creeps.push(creepLogic.harvester.defaultSettings(s.id,s.miningLocations[0],1))
 
             //add trucks
-            creeps.push(creepLogic.miningTruck.defaultSettings(sourceObject.id, s.miningLocations[0],castleRoom.name, 1))
+            creeps.push(creepLogic.miningTruck.defaultSettings(s.id, s.miningLocations[0],castleRoom.name, 1))
 
             Memory.resourcingManager[s.id] = {
                 source: Game.getObjectById(s.id),

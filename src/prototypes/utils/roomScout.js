@@ -28,7 +28,7 @@ function roomScout(room) {
         room.memory.adjacentRooms = Game.map.describeExits(room.name)
     }
 
-    if(!room.memory.sources) {
+    if(!room.memory.sources && room.find(FIND_SOURCES)) {
     //if(true){
         room.memory.sources = {}
         for(let s of room.find(FIND_SOURCES)){
