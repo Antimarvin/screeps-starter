@@ -59,41 +59,39 @@ function buildingManager(castleRoom){
     if(Object.keys(builders).length > 0){
         for(let b in builders){
             let builder = builders[b]
-            console.log(`I have builder ${builder.name} currently doing ${builder.memory.job}`)
-            if(builder.memory.job === false){
-                console.log(`The length of constructionsites is ${constructionSites.length}`)
-                console.log(`The length of high repair is ${highPriorityRepairList.length}`)
-                console.log(`The length of medium repair is ${mediumPriorityRepairList.length}`)
-                console.log(`The length of low repair is ${mediumPriorityRepairList.length}`)
-                if(constructionSites.length > 0){
-                    //console.log(JSON.stringify(constructionSite))
-                    let target = constructionSites.pop()
-                    builder.memory.job = "Build"
-                    builder.memory.jobTarget = target[Object.keys(target)[0]]
-                }
-                else if (highPriorityRepairList.length > 0){
-                    let target = highPriorityRepairList.pop()
-                    builder.memory.job = "Repair"
-                    builder.memory.jobTarget = target[Object.keys(target)[0]]
-                }
-                else if (mediumPriorityRepairList.length > 0){
-                    let target = mediumPriorityRepairList.pop()
+            console.log(`The length of constructionsites is ${constructionSites.length}`)
+            console.log(`The length of high repair is ${highPriorityRepairList.length}`)
+            console.log(`The length of medium repair is ${mediumPriorityRepairList.length}`)
+            console.log(`The length of low repair is ${mediumPriorityRepairList.length}`)
+            if(constructionSites.length > 0){
+                //console.log(JSON.stringify(constructionSite))
+                let target = constructionSites.pop()
+                builder.memory.job = "Build"
+                builder.memory.jobTarget = target[Object.keys(target)[0]]
+            }
+            else if (highPriorityRepairList.length > 0){
+                let target = highPriorityRepairList.pop()
+                builder.memory.job = "Repair"
+                builder.memory.jobTarget = target[Object.keys(target)[0]]
+            }
+            else if (mediumPriorityRepairList.length > 0){
+                let target = mediumPriorityRepairList.pop()
 
-                    builder.memory.job = "Repair"
-                    builder.memory.jobTarget = target[Object.keys(target)[0]]
-                }
-                else if (lowPriorityRepairList.length > 0){
-                    let target = lowPriorityRepairList.pop()
-                    builder.memory.job = "Repair"
-                    builder.memory.jobTarget = target[Object.keys(target)[0]]
-                }
-                else {
-                    builder.memory.job = "Upgrade"
-                    builder.memory.jobTarget = builder.room.controller
-                }
+                builder.memory.job = "Repair"
+                builder.memory.jobTarget = target[Object.keys(target)[0]]
+            }
+            else if (lowPriorityRepairList.length > 0){
+                let target = lowPriorityRepairList.pop()
+                builder.memory.job = "Repair"
+                builder.memory.jobTarget = target[Object.keys(target)[0]]
+            }
+            else {
+                builder.memory.job = "Upgrade"
+                builder.memory.jobTarget = builder.room.controller
             }
         }
     }
+
 
 }
 module.exports = buildingManager

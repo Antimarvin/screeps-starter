@@ -4,11 +4,12 @@ var roleBuilder = {
 
         if (creep.store.energy === 0) {
             creep.memory.working = false
+            creep.memory.job = false
+            creep.memory.jobTarget = false
         }
         if(creep.store.getFreeCapacity() === 0){
             creep.memory.working = true
         }
-
 
         if(!creep.memory.working || !creep.memory.job) {
 
@@ -31,18 +32,20 @@ var roleBuilder = {
         else if (creep.memory.working) {
 
             let target = new RoomPosition(creep.memory.jobTarget.pos.x,creep.memory.jobTarget.pos.y,creep.memory.jobTarget.pos.roomName)
-            console.log(`${creep.name} is in ${creep.room.name} and headed to ${target.roomName}`)
+
             if (creep.room.name === target.roomName) {
-                console.log(`${creep.name} is in the right room`)
-                if (creep.pos.isNearTo(target)) {
-                    console.log(`${creep.name} is near its build target`)
+
+                if (creep.pos.inRangeTo(target, 3)) {
                     if (creep.memory.job === "Build") {
                         if(creep.build(Game.getObjectById(creep.memory.jobTarget.id)) === ERR_INVALID_TARGET){
                             creep.memory.job = false
                             creep.memory.jobTarget = false
                         }
                     } else if (creep.memory.job === "Repair") {
-                        creep.repair(Game.getObjectById(creep.memory.jobTarget.id))
+                        if(creep.repair(Game.getObjectById(creep.memory.jobTarget.id)) === ERR_INVALID_TARGET){
+                            creep.memory.job = false
+                            creep.memory.jobTarget = false
+                        }
                     } else if (creep.memory.job === "Upgrade") {
                         creep.upgradeController(Game.getObjectById(creep.memory.jobTarget.id))
                     } else {
@@ -50,12 +53,10 @@ var roleBuilder = {
                     }
                 }
                 else{
-                    console.log(`${creep.name} is moving to it target`)
                     creep.moveTo(target)
                 }
             }
             else {
-                console.log(`${creep.name} is in the right room`)
                 creep.moveTo(new RoomPosition(target.x, target.y, target.roomName))
             }
         }
