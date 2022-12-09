@@ -11,6 +11,7 @@ function buildingManager(castleRoom){
         return {[key]: Game.constructionSites[key]}
     })
 
+
     let mystructures = []
     for(let roomKey in Game.rooms){
         let room = Game.rooms[roomKey]
@@ -20,32 +21,27 @@ function buildingManager(castleRoom){
             mystructures.push(structure)
         }
     }
+    console.log(JSON.stringify(mystructures))
 
-    let highPriorityRepair = _.filter(mystructures, s => s.hits < s.hitsMax
-        && (s.structureType === STRUCTURE_SPAWN
-        || s.structureType === STRUCTURE_STORAGE
-        || s.structureType === STRUCTURE_EXTENSION))
-    //console.log(JSON.stringify(highPriorityRepair))
-    let highPriorityRepairList = Object.keys(highPriorityRepair).map( function (key){
-        return {[key]: highPriorityRepair[key]}
-    })
+    for(let i in mystructures){
+        console.log(JSON.stringify(mystructures[i]))
+    }
+
+
+    let highPriorityRepair = _.filter(mystructures, i => mystructures[i].hits < mystructures[i].hitsMax
+        && (mystructures[i].structureType === STRUCTURE_SPAWN
+        || mystructures[i].structureType === STRUCTURE_STORAGE
+        || mystructures[i].structureType === STRUCTURE_EXTENSION))
 
     //console.log(JSON.stringify(highPriorityRepairList))
-    let mediumPriorityRepair = _.filter(mystructures, s => s.hits < s.hitsMax
-        && (s.structureType === STRUCTURE_LAB
-            || s.structureType === STRUCTURE_CONTAINER
-            || s.structureType === STRUCTURE_LINK))
-    let mediumPriorityRepairList = Object.keys(mediumPriorityRepair).map( function (key){
-        return {[key]: mediumPriorityRepair[key]}
-    })
+    let mediumPriorityRepair = _.filter(mystructures, i => mystructures[i].hits < mystructures[i].hitsMax
+        && (mystructures[i].structureType === STRUCTURE_LAB
+            || mystructures[i].structureType === STRUCTURE_CONTAINER
+            || mystructures[i].structureType === STRUCTURE_LINK))
 
-    let lowPriorityRepair = _.filter(mystructures, s => s.hits < s.hitsMax
-        && (s.structureType === STRUCTURE_LAB
-            || s.structureType === STRUCTURE_CONTAINER
-            || s.structureType === STRUCTURE_LINK))
-    let lowPriorityRepairList = Object.keys(lowPriorityRepair).map( function (key){
-        return {[key]: lowPriorityRepair[key]}
-    })
+    let lowPriorityRepair = _.filter(mystructures, i => mystructures[i].hits < mystructures[i].hitsMax)
+
+
 
     // Check to make sure all your creeps are spawned, if not add them to build queue
     for(let i = 0; i < Memory.buildingManager.creeps.length; i++) {
@@ -54,34 +50,39 @@ function buildingManager(castleRoom){
             castleRoom.memory.buildQueue.medium.push(Memory.buildingManager.creeps[i])
         }
     }
+
+
+
+
     let builders = _.filter(Game.creeps, c => c.memory.role === 'builder')
     //console.log(JSON.stringify(builders))
     if(Object.keys(builders).length > 0){
         for(let b in builders){
+            let builderIndex = 0
             let builder = builders[b]
-            console.log(`The length of constructionsites is ${constructionSites.length}`)
-            console.log(`The length of high repair is ${highPriorityRepairList.length}`)
-            console.log(`The length of medium repair is ${mediumPriorityRepairList.length}`)
-            console.log(`The length of low repair is ${mediumPriorityRepairList.length}`)
+            console.log(`The length of constructionSites is ${constructionSites.length}`)
+            console.log(`The length of high repair is ${highPriorityRepair.length}`)
+            console.log(`The length of medium repair is ${mediumPriorityRepair.length}`)
+            console.log(`The length of low repair is ${lowPriorityRepair.length}`)
             if(constructionSites.length > 0){
                 //console.log(JSON.stringify(constructionSite))
                 let target = constructionSites.pop()
                 builder.memory.job = "Build"
                 builder.memory.jobTarget = target[Object.keys(target)[0]]
             }
-            else if (highPriorityRepairList.length > 0){
-                let target = highPriorityRepairList.pop()
+            else if (highPriorityRepair.length > 0){
+                let target = highPriorityRepair
                 builder.memory.job = "Repair"
                 builder.memory.jobTarget = target[Object.keys(target)[0]]
             }
-            else if (mediumPriorityRepairList.length > 0){
-                let target = mediumPriorityRepairList.pop()
+            else if (mediumPriorityRepair.length > 0){
+                let target = mediumPriorityRepair.pop()
 
                 builder.memory.job = "Repair"
                 builder.memory.jobTarget = target[Object.keys(target)[0]]
             }
-            else if (lowPriorityRepairList.length > 0){
-                let target = lowPriorityRepairList.pop()
+            else if (lowPriorityRepair.length > 0){
+                let target = lowPriorityRepair.pop()
                 builder.memory.job = "Repair"
                 builder.memory.jobTarget = target[Object.keys(target)[0]]
             }
