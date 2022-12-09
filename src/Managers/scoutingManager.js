@@ -25,7 +25,8 @@ function scoutingManager(castleRoom){
 
     let scouts = _.filter(Game.creeps, c => c.memory.role === 'scout')
     if(scouts){
-        for(let scout in scouts){
+        for(let s in scouts){
+            let scout = scouts[s]
             if(scout.memory.working === false){
                 scout.memory.working = true
                 scout.memory.targetRoom = roomsToScout[0]

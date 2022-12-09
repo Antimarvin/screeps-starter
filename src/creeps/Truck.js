@@ -12,9 +12,8 @@ var roleTruck = {
         if(!creep.memory.working) {
             //creep.say("Refuel")
             let structureWithEnergy = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: s => (s.structureType === STRUCTURE_CONTAINER || s.structureType == STRUCTURE_STORAGE)
+                filter: s => (s.structureType === STRUCTURE_CONTAINER || s.structureType === STRUCTURE_STORAGE)
                     && s.store.energy > 0
-                    && s.room.memory.containers[s.id].mine === true
             })
 
             if (structureWithEnergy) {
