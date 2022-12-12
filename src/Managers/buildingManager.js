@@ -21,25 +21,20 @@ function buildingManager(castleRoom){
             mystructures.push(structure)
         }
     }
-    console.log(JSON.stringify(mystructures))
-
-    for(let i in mystructures){
-        console.log(JSON.stringify(mystructures[i]))
-    }
 
 
-    let highPriorityRepair = _.filter(mystructures, i => mystructures[i].hits < mystructures[i].hitsMax
-        && (mystructures[i].structureType === STRUCTURE_SPAWN
-        || mystructures[i].structureType === STRUCTURE_STORAGE
-        || mystructures[i].structureType === STRUCTURE_EXTENSION))
+    let highPriorityRepair = _.filter(mystructures, i => i.hits < i.hitsMax
+        && (i.structureType === STRUCTURE_SPAWN
+        || i.structureType === STRUCTURE_STORAGE
+        || i.structureType === STRUCTURE_EXTENSION))
 
     //console.log(JSON.stringify(highPriorityRepairList))
-    let mediumPriorityRepair = _.filter(mystructures, i => mystructures[i].hits < mystructures[i].hitsMax
-        && (mystructures[i].structureType === STRUCTURE_LAB
-            || mystructures[i].structureType === STRUCTURE_CONTAINER
-            || mystructures[i].structureType === STRUCTURE_LINK))
+    let mediumPriorityRepair = _.filter(mystructures, i => i.hits < i.hitsMax
+        && (i.structureType === STRUCTURE_LAB
+            || i.structureType === STRUCTURE_CONTAINER
+            || i.structureType === STRUCTURE_LINK))
 
-    let lowPriorityRepair = _.filter(mystructures, i => mystructures[i].hits < mystructures[i].hitsMax)
+    let lowPriorityRepair = _.filter(mystructures, i => i.hits < i.hitsMax)
 
 
 
@@ -50,9 +45,6 @@ function buildingManager(castleRoom){
             castleRoom.memory.buildQueue.medium.push(Memory.buildingManager.creeps[i])
         }
     }
-
-
-
 
     let builders = _.filter(Game.creeps, c => c.memory.role === 'builder')
     //console.log(JSON.stringify(builders))
