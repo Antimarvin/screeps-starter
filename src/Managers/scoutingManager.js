@@ -13,7 +13,6 @@ function scoutingManager(castleRoom){
             roomsToScout.push(castleRoom.memory.adjacentRooms[adjacentRoomsKey])
         }
     }
-    //console.log(JSON.stringify(roomsToScout))
 
     // Check to make sure all your creeps are spawned, if not add them to build queue
     for(let i = 0; i < Memory.scoutingManager.creeps.length; i++) {
@@ -29,10 +28,9 @@ function scoutingManager(castleRoom){
             let scout = scouts[s]
             console.log(`Scout ${scout.name} is working ${scout.memory.working}`)
             if(scout.memory.working === false && roomsToScout.length > 0){
-                //console.log(`Sending ${scout.name} to go to ${roomsToScout[0]}`)
                 scout.memory.working = true
                 scout.memory.targetRoom = roomsToScout[0]
-                //console.log(scout.memory.targetRoom)
+
             }
         }
     }

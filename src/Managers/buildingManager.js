@@ -6,9 +6,7 @@ function buildingManager(castleRoom){
     Memory.buildingManager = {
         creeps: [creepLogic.builder.defaultSettings(castleRoom.name,1),
                  creepLogic.builder.defaultSettings(castleRoom.name,2),
-                 creepLogic.builder.defaultSettings(castleRoom.name,3),
-                 creepLogic.builder.defaultSettings(castleRoom.name,4),
-                 creepLogic.builder.defaultSettings(castleRoom.name,5)
+                 creepLogic.builder.defaultSettings(castleRoom.name,3)
         ]
     }
 
@@ -17,31 +15,32 @@ function buildingManager(castleRoom){
     Memory.buildingManager.constructionSites = constructionSites
 
     //get a list of all structures in my rooms to see if they need repair.
-    let mystructures = []
+    let myStructures = []
     for(let roomKey in Game.rooms){
         let room = Game.rooms[roomKey]
         //console.log(room.find(FIND_STRUCTURES, {filter: s => s.my}))
         let myRoomStructures = room.find(FIND_STRUCTURES)
         for(let structure of myRoomStructures){
-            mystructures.push(structure)
+            myStructures.push(structure)
         }
     }
 
 
     //filter myStructures first to see if they need to be repaired, then by structure type to prioritize economic buildings.
-    let highPriorityRepair = _.filter(mystructures, i => i.hits < i.hitsMax
+    let highPriorityRepair = _.filter(myStructures, i => i.hits < i.hitsMax
         && (i.structureType === STRUCTURE_SPAWN
         || i.structureType === STRUCTURE_STORAGE
         || i.structureType === STRUCTURE_EXTENSION))
     Memory.buildingManager.highPriorityRepair = highPriorityRepair
 
-    let mediumPriorityRepair = _.filter(mystructures, i => i.hits < i.hitsMax
+    let mediumPriorityRepair = _.filter(myStructures, i => i.hits < i.hitsMax
         && (i.structureType === STRUCTURE_LAB
             || i.structureType === STRUCTURE_CONTAINER
             || i.structureType === STRUCTURE_LINK))
     Memory.buildingManager.mediumPriorityRepair = mediumPriorityRepair
 
-    let lowPriorityRepair = _.filter(mystructures, i => i.hits < i.hitsMax)
+    let lowPriorityRepair = _.filter(myStructures, i => i.hits < i.hitsMax
+        && i.structureType !== STRUCTURE_WALL)
     Memory.buildingManager.lowPriorityRepair = lowPriorityRepair
 
     console.log(`The length of constructionSites is ${constructionSites.length}`)
@@ -92,7 +91,6 @@ function buildingManager(castleRoom){
                 if(target){
                     mediumPriorityRepair.splice(mediumPriorityRepair.indexOf(target), 1)
                 }
-
                 builder.memory.job = "Repair"
                 builder.memory.jobTarget = target
             }
@@ -110,7 +108,5 @@ function buildingManager(castleRoom){
             }
         }
     }
-
-
 }
 module.exports = buildingManager
