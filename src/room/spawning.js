@@ -1,4 +1,4 @@
-let creepLogic = require("../creeps/index");
+//let creepLogic = require("../creeps/index");
 //let creepTypes = _.keys(creepLogic);
 function spawnCreeps(room) {
     let spawns = room.find(FIND_MY_SPAWNS)
@@ -20,7 +20,7 @@ function spawnCreeps(room) {
             let energy = room.energyAvailable
             let creep = room.memory.buildQueue.medium[0]
             if(creep.energyLimit){
-                energy = Math.min(creep.energyLimit, room.energyAvailable)
+                energy = Math.min(creep.energyLimit, room.energyCapacityAvailable)
             }
             if(s.createScalingCreep(creep.name,creep.baseBody, creep.scalingBody, creep.memory, energy) === OK){
                 room.memory.buildQueue.medium.pop()
@@ -30,7 +30,7 @@ function spawnCreeps(room) {
             let energy = room.energyAvailable
             let creep = room.memory.buildQueue.low[0]
             if(creep.energyLimit){
-                energy = Math.min(creep.energyLimit, room.energyAvailable)
+                energy = Math.min(creep.energyLimit, room.energyCapacityAvailable)
             }
             if(s.createScalingCreep(creep.name,creep.baseBody, creep.scalingBody, creep.memory, energy) === OK){
                 room.memory.buildQueue.low.pop()

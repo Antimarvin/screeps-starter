@@ -19,9 +19,18 @@ var roleBuilder = {
                         && s.store.energy >= creep.store.getFreeCapacity()
                 })
 
+                let droppedResources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES,{
+                    filter: resources => resources.amount >= creep.store.getFreeCapacity()
+                })
+
                 if (availableContainer) {
                     if (creep.withdraw(availableContainer, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                         creep.moveTo(availableContainer);
+                    }
+                }
+                else {
+                    if(creep.pickup(droppedResources) === ERR_NOT_IN_RANGE){
+                        creep.moveTo(droppedResources)
                     }
                 }
             }
